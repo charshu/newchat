@@ -7,7 +7,7 @@
 	// on connection to server, ask for user's name with an anonymous callback
 	socket.on('connect', function() {
 		// call the server-side function 'adduser' and send one parameter (value of prompt)
-		socket.emit('adduser', '<%= user.name.givenName %>');
+		socket.emit('adduser', '<%= user.name.givenName %>','<%=  user.id %>' );
 	});
 
 	// listener, whenever the server emits 'updatechat', this updates the chat body
@@ -23,13 +23,13 @@
 			if (value == current_room) {
 				$('#rooms').append('<div>' + value + '</div>');
 			} else {
-				$('#rooms').append('<div><a href="#" onclick="switchRoom(\'' + value + '\')">' + value + '</a></div>');
+				$('#rooms').append('<div><a href="#" onclick="switchRoom(\'<%=  user.id %>\',\'' + value + '\')">' + value + '</a></div>');
 			}
 		});
 	});
 
-	function switchRoom(room) {
-		socket.emit('switchRoom', room);
+	function switchRoom(user_id,room) {
+		socket.emit('switchRoom',user_id , room);
 	}
 	socket.on('updateAddRooms', function(rooms) {
 		$('#rooms').empty();
@@ -61,10 +61,11 @@
 			}
 		});
 		$('#addRoomButton').click(function() {
-			var name = $('#roomName').val();
+			var newroom_name = $('#roomName').val();
 			$('#roomName').val('');
-			socket.emit('addRoom', name);
+			socket.emit('addRoom','<%= user.id %>', newroom_name);
 		});
+
 
 		$('#username').text('<%= user.displayName %>');
 
