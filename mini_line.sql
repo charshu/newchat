@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 12, 2016 at 03:34 AM
+-- Generation Time: Apr 12, 2016 at 08:18 AM
 -- Server version: 5.7.10-log
 -- PHP Version: 5.6.17
 
@@ -27,8 +27,10 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `joinroom` (
-  `rid` int(11) DEFAULT NULL,
-  `fbID` varchar(128) NOT NULL
+  `fid` varchar(128) NOT NULL,
+  `rid` int(4) NOT NULL,
+  `jointime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `leavetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -38,9 +40,9 @@ CREATE TABLE `joinroom` (
 --
 
 CREATE TABLE `message` (
-  `rid` int(3) DEFAULT NULL,
-  `fbID` varchar(128) DEFAULT NULL,
-  `senttime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `fid` varchar(128) NOT NULL,
+  `rid` int(3) NOT NULL,
+  `senttime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `msg` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -51,8 +53,8 @@ CREATE TABLE `message` (
 --
 
 CREATE TABLE `room` (
-  `rid` int(3) NOT NULL,
-  `rname` text NOT NULL
+  `rid` int(4) NOT NULL,
+  `rname` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -62,7 +64,8 @@ CREATE TABLE `room` (
 --
 
 CREATE TABLE `user` (
-  `fbID` varchar(128) NOT NULL
+  `fid` varchar(128) NOT NULL,
+  `fname` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -73,15 +76,17 @@ CREATE TABLE `user` (
 -- Indexes for table `joinroom`
 --
 ALTER TABLE `joinroom`
+  ADD PRIMARY KEY (`fid`,`rid`),
   ADD KEY `rid` (`rid`),
-  ADD KEY `fbID` (`fbID`);
+  ADD KEY `fid` (`fid`);
 
 --
 -- Indexes for table `message`
 --
 ALTER TABLE `message`
+  ADD PRIMARY KEY (`fid`,`rid`,`senttime`),
   ADD KEY `rid` (`rid`),
-  ADD KEY `fbID` (`fbID`);
+  ADD KEY `fid` (`fid`);
 
 --
 -- Indexes for table `room`
@@ -93,7 +98,7 @@ ALTER TABLE `room`
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
-  ADD PRIMARY KEY (`fbID`);
+  ADD PRIMARY KEY (`fid`);
 
 --
 -- Constraints for dumped tables
@@ -104,14 +109,14 @@ ALTER TABLE `user`
 --
 ALTER TABLE `joinroom`
   ADD CONSTRAINT `joinroom_ibfk_1` FOREIGN KEY (`rid`) REFERENCES `room` (`rid`),
-  ADD CONSTRAINT `joinroom_ibfk_2` FOREIGN KEY (`fbID`) REFERENCES `user` (`fbID`);
+  ADD CONSTRAINT `joinroom_ibfk_2` FOREIGN KEY (`fid`) REFERENCES `user` (`fid`);
 
 --
 -- Constraints for table `message`
 --
 ALTER TABLE `message`
   ADD CONSTRAINT `message_ibfk_1` FOREIGN KEY (`rid`) REFERENCES `room` (`rid`),
-  ADD CONSTRAINT `message_ibfk_2` FOREIGN KEY (`fbID`) REFERENCES `user` (`fbID`);
+  ADD CONSTRAINT `message_ibfk_2` FOREIGN KEY (`fid`) REFERENCES `user` (`fid`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
