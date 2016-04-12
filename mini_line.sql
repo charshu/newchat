@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 12, 2016 at 08:18 AM
+-- Generation Time: Apr 12, 2016 at 09:40 AM
 -- Server version: 5.7.10-log
 -- PHP Version: 5.6.17
 
@@ -42,7 +42,7 @@ CREATE TABLE `joinroom` (
 CREATE TABLE `message` (
   `fid` varchar(128) NOT NULL,
   `rid` int(3) NOT NULL,
-  `senttime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `senttime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `msg` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
