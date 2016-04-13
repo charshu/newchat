@@ -5,20 +5,26 @@
 		align-content: center;
 		align-items: flex-start;
 		height: 100%;
-		background-color: #F8E0E6;
+		/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,f1f1f1+50,e1e1e1+51,f6f6f6+100;White+Gloss+%231 */
+    background: rgb(255,255,255); /* Old browsers */
+    background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(241,241,241,1) 50%, rgba(225,225,225,1) 51%, rgba(246,246,246,1) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(241,241,241,1) 50%,rgba(225,225,225,1) 51%,rgba(246,246,246,1) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(241,241,241,1) 50%,rgba(225,225,225,1) 51%,rgba(246,246,246,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f6f6f6',GradientType=0 ); /* IE6-9 */
+
 
 	}
 
 	.roomArea{
-		/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f3e2c7+0,c19e67+50,b68d4c+51,e9d4b3+100;L+Brown+3D */
-		background: rgb(243,226,199); /* Old browsers */
-		background: -moz-linear-gradient(top,  rgba(243,226,199,1) 0%, rgba(193,158,103,1) 50%, rgba(182,141,76,1) 51%, rgba(233,212,179,1) 100%); /* FF3.6-15 */
-		background: -webkit-linear-gradient(top,  rgba(243,226,199,1) 0%,rgba(193,158,103,1) 50%,rgba(182,141,76,1) 51%,rgba(233,212,179,1) 100%); /* Chrome10-25,Safari5.1-6 */
-		background: linear-gradient(to bottom,  rgba(243,226,199,1) 0%,rgba(193,158,103,1) 50%,rgba(182,141,76,1) 51%,rgba(233,212,179,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f3e2c7', endColorstr='#e9d4b3',GradientType=0 ); /* IE6-9 */
+		/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f2f6f8+0,d8e1e7+50,b5c6d0+51,e0eff9+100;Grey+Gloss+%232 */
+		background: rgb(242,246,248); /* Old browsers */
+		background: -moz-linear-gradient(top,  rgba(242,246,248,1) 0%, rgba(216,225,231,1) 50%, rgba(181,198,208,1) 51%, rgba(224,239,249,1) 100%); /* FF3.6-15 */
+		background: -webkit-linear-gradient(top,  rgba(242,246,248,1) 0%,rgba(216,225,231,1) 50%,rgba(181,198,208,1) 51%,rgba(224,239,249,1) 100%); /* Chrome10-25,Safari5.1-6 */
+		background: linear-gradient(to bottom,  rgba(242,246,248,1) 0%,rgba(216,225,231,1) 50%,rgba(181,198,208,1) 51%,rgba(224,239,249,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f6f8', endColorstr='#e0eff9',GradientType=0 ); /* IE6-9 */
 
 		width: calc(20%-20px);
-		height: calc(100% - 20px);
+		/*height: calc(100% - 20px);*/
 
 		border: 1px solid #B9BDC1;
     color: #797979;
@@ -39,20 +45,27 @@
     border: 1px solid #848484;
     outline:0;
     height:25px;
-    width: 275px;
-    padding-right:20px;
+
+
 		background: transparent url(http://html-generator.weebly.com/files/theme/input-text-8.png) repeat-x;
+		box-shadow: 0 0 5px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+		margin: 10px;
+		padding-left: 5px;
+		padding-right:20px;
+
+		display: block;
 
 	}
 	.room:hover {
     color: grey;
+		box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 	}
 
 	/*--------------------------------------------*/
 
 	.chatArea{
 		background-color: #F8E0E6;
-		width: 65%;
+		width: 80%;
 		height: 100%;
 
 		border: 1px solid #B9BDC1;
@@ -102,8 +115,9 @@
 
 	.textbox{
 		background-color: white;
-		width: calc(100% - 50px);
+		width: calc(100% - 20px);
 		height: 30px;
+		margin: 5px;
 
 		padding-left: 10px;
 		padding-right: 10px;
@@ -129,21 +143,24 @@
     border: 1px solid #848484;
 		-webkit-transition-duration: 0.4s; /* Safari */
     transition-duration: 0.4s;
-		box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+
 
 		height: 30px;
+		font-family: courier;
+		font-size: 14px;
 
 	}
 	.button:hover {
     color: grey;
+		box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 	}
 
 
 	/*--------------------------------------------*/
 
 	.userArea{
-		background-color: red;
-		width: 15%;
+
+		width: 200px;
 		height: 100%;
 
 		display: flex;
@@ -156,12 +173,13 @@
 
 		text-align: center;
 
-		/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f3e2c7+0,c19e67+50,b68d4c+51,e9d4b3+100;L+Brown+3D */
-		background: rgb(243,226,199); /* Old browsers */
-		background: -moz-linear-gradient(top,  rgba(243,226,199,1) 0%, rgba(193,158,103,1) 50%, rgba(182,141,76,1) 51%, rgba(233,212,179,1) 100%); /* FF3.6-15 */
-		background: -webkit-linear-gradient(top,  rgba(243,226,199,1) 0%,rgba(193,158,103,1) 50%,rgba(182,141,76,1) 51%,rgba(233,212,179,1) 100%); /* Chrome10-25,Safari5.1-6 */
-		background: linear-gradient(to bottom,  rgba(243,226,199,1) 0%,rgba(193,158,103,1) 50%,rgba(182,141,76,1) 51%,rgba(233,212,179,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f3e2c7', endColorstr='#e9d4b3',GradientType=0 ); /* IE6-9 */
+		/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ebe9f9+0,d8d0ef+50,cec7ec+51,c1bfea+100;Purple+3D+%231 */
+		background: rgb(235,233,249); /* Old browsers */
+		background: -moz-linear-gradient(top,  rgba(235,233,249,1) 0%, rgba(216,208,239,1) 50%, rgba(206,199,236,1) 51%, rgba(193,191,234,1) 100%); /* FF3.6-15 */
+		background: -webkit-linear-gradient(top,  rgba(235,233,249,1) 0%,rgba(216,208,239,1) 50%,rgba(206,199,236,1) 51%,rgba(193,191,234,1) 100%); /* Chrome10-25,Safari5.1-6 */
+		background: linear-gradient(to bottom,  rgba(235,233,249,1) 0%,rgba(216,208,239,1) 50%,rgba(206,199,236,1) 51%,rgba(193,191,234,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ebe9f9', endColorstr='#c1bfea',GradientType=0 ); /* IE6-9 */
+
 
 		width: calc(100%-20px);
 		height: calc(40%-20px);
@@ -181,12 +199,12 @@
 	.userLogo{
 		text-align: center;
 
-		/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f3e2c7+0,c19e67+50,b68d4c+51,e9d4b3+100;L+Brown+3D */
-		background: rgb(243,226,199); /* Old browsers */
-		background: -moz-linear-gradient(top,  rgba(243,226,199,1) 0%, rgba(193,158,103,1) 50%, rgba(182,141,76,1) 51%, rgba(233,212,179,1) 100%); /* FF3.6-15 */
-		background: -webkit-linear-gradient(top,  rgba(243,226,199,1) 0%,rgba(193,158,103,1) 50%,rgba(182,141,76,1) 51%,rgba(233,212,179,1) 100%); /* Chrome10-25,Safari5.1-6 */
-		background: linear-gradient(to bottom,  rgba(243,226,199,1) 0%,rgba(193,158,103,1) 50%,rgba(182,141,76,1) 51%,rgba(233,212,179,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f3e2c7', endColorstr='#e9d4b3',GradientType=0 ); /* IE6-9 */
+		/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,f1f1f1+50,e1e1e1+51,f6f6f6+100;White+Gloss+%231 */
+		background: rgb(255,255,255); /* Old browsers */
+		background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(241,241,241,1) 50%, rgba(225,225,225,1) 51%, rgba(246,246,246,1) 100%); /* FF3.6-15 */
+		background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(241,241,241,1) 50%,rgba(225,225,225,1) 51%,rgba(246,246,246,1) 100%); /* Chrome10-25,Safari5.1-6 */
+		background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(241,241,241,1) 50%,rgba(225,225,225,1) 51%,rgba(246,246,246,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f6f6f6',GradientType=0 ); /* IE6-9 */
 
 		width: calc(100%-20px);
 		height: calc(30%-20px);
@@ -207,12 +225,12 @@
 
 		text-align: center;
 
-		/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f3e2c7+0,c19e67+50,b68d4c+51,e9d4b3+100;L+Brown+3D */
-		background: rgb(243,226,199); /* Old browsers */
-		background: -moz-linear-gradient(top,  rgba(243,226,199,1) 0%, rgba(193,158,103,1) 50%, rgba(182,141,76,1) 51%, rgba(233,212,179,1) 100%); /* FF3.6-15 */
-		background: -webkit-linear-gradient(top,  rgba(243,226,199,1) 0%,rgba(193,158,103,1) 50%,rgba(182,141,76,1) 51%,rgba(233,212,179,1) 100%); /* Chrome10-25,Safari5.1-6 */
-		background: linear-gradient(to bottom,  rgba(243,226,199,1) 0%,rgba(193,158,103,1) 50%,rgba(182,141,76,1) 51%,rgba(233,212,179,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f3e2c7', endColorstr='#e9d4b3',GradientType=0 ); /* IE6-9 */
+		/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ebe9f9+0,d8d0ef+50,cec7ec+51,c1bfea+100;Purple+3D+%231 */
+		background: rgb(235,233,249); /* Old browsers */
+		background: -moz-linear-gradient(top,  rgba(235,233,249,1) 0%, rgba(216,208,239,1) 50%, rgba(206,199,236,1) 51%, rgba(193,191,234,1) 100%); /* FF3.6-15 */
+		background: -webkit-linear-gradient(top,  rgba(235,233,249,1) 0%,rgba(216,208,239,1) 50%,rgba(206,199,236,1) 51%,rgba(193,191,234,1) 100%); /* Chrome10-25,Safari5.1-6 */
+		background: linear-gradient(to bottom,  rgba(235,233,249,1) 0%,rgba(216,208,239,1) 50%,rgba(206,199,236,1) 51%,rgba(193,191,234,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ebe9f9', endColorstr='#c1bfea',GradientType=0 ); /* IE6-9 */
 
 		width: calc(100%-20px);
 		height: calc(30%-20px);
@@ -227,6 +245,12 @@
     border-radius: 3px;
 
 		padding: 10px;
+	}
+
+	p {
+		font-family: courier;
+		font-size: 18px;
+		text-align: left;
 	}
 
 
@@ -314,9 +338,9 @@
 
 	<div class="roomArea">
 
-		<b>ROOMS</b>
-		<input class="textbox" id="roomName" style="width:100px;" />
-		<input class="button" type="button" id="addRoomButton" value="Create" />
+		<b style="font-family: courier; font-size: 20px;">ROOMS</b>
+		<input class="textbox" id="roomName" />
+		<input class="button" type="button" id="addRoomButton" value="Create Room"/>
 		<div id="rooms"></div>
 
 	</div>
@@ -325,7 +349,7 @@
 
 		<div class="chatLog" id="conversation"></div>
 		<div class=chatInput>
-			<input class="textbox" id="data"  />
+			<input class="textbox" style="margin: 0px;" id="data"  />
 			<input class="button" type="button" id="datasend" value="Send" />
 		</div>
 
@@ -334,20 +358,24 @@
 	<div class="userArea">
 
 		<div class="userFace">
-			<img src="<%= user.photos[0].value %>" style="border-radius: 50%"></img>
-			<br>
-			<div id="username"></div>
-			<br>
-			<br>
+			<img src="<%= user.photos[0].value %>" style="width: 100px; hight:100px;border-radius: 50%;"></img>
+			<br/>
+			<div id="username" style="font-family: courier; font-size: 18px;"></div>
+
 		</div>
 
 		<div class="userLogo">
-				<img src="<%= user.photos[0].value %>" style="border-radius: 50%"></img>
-				รูป Logo
+				<img src="logo.png"/ style="border-radius: 8px;">
 		</div>
 
 		<div class="userCredit">
-			<p>ที่เหลือ ใส่ชื่อผู้จัดทำมะ</p>
+			<p>
+				ผู้จัดทำ <br>
+					1.	<br>
+					2.	<br>
+					3.	<br>
+					4.	<br>
+			</p>
 		</div>
 
 	</div>
