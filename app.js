@@ -145,23 +145,33 @@ io.sockets.on('connection', function(socket) {
     //UPDATE joinroom SET leavetime = CURRENT_TIMESTAMP WHERE fid = '1386936317999356' and rid='2'
     socket.on('switchRoom', function(user_id, room) {
         console.log('<----switchRoom----->');
-        console.log('switch to room ' + room.rname);
+        console.log('switch to room ' + room.rname + ' from: ' + socket.room);
 
-        con.query('UPDATE joinroom SET leavetime = CURRENT_TIMESTAMP WHERE fid = \'' + user_id + '\' and rid=\'' + room.rid + '\'', function(err, res) {
+        con.query('SELECT rid FROM room WHERE rname=\'' + socket.room + '\'', function(err, rows) {
             if (err) console.log(err);
-            else console.log('update complete');
+            else if (rows.length == 0) console.log('rid not found !');
+            else {
+                console.log(rows);
+                console.log('old roomm: ' + socket.room + ' rid : ' + rows[0].rid);
+                con.query('UPDATE joinroom SET leavetime = CURRENT_TIMESTAMP WHERE fid = \'' + user_id + '\' and rid=\'' + rows[0].rid + '\'', function(err, res) {
+                    if (err) console.log(err);
+                    else console.log('update complete');
+                });
+            }
+            socket.leave(socket.room);
+            socket.join(room.rname);
+            socket.emit('updatechat', 'SERVER', 'you have connected to ' + room.rname);
+            // sent message to OLD room
+            socket.broadcast.to(socket.room).emit('updatechat', 'SERVER', socket.username + ' has left this room');
+            // update socket session room title
+            socket.room = room.rname;
+            socket.broadcast.to(room.rname).emit('updatechat', 'SERVER', socket.username + ' has joined this room');
+            refreshListRoom();
+            // socket.emit('updaterooms', rooms, newroom);
+            //console.log('<------end switchRoom------>');
         });
-        socket.leave(socket.room);
-        socket.join(room.rname);
-        socket.emit('updatechat', 'SERVER', 'you have connected to ' + room.rname);
-        // sent message to OLD room
-        socket.broadcast.to(socket.room).emit('updatechat', 'SERVER', socket.username + ' has left this room');
-        // update socket session room title
-        socket.room = room.rname;
-        socket.broadcast.to(room.rname).emit('updatechat', 'SERVER', socket.username + ' has joined this room');
-        refreshListRoom();
-        // socket.emit('updaterooms', rooms, newroom);
-        //console.log('<------end switchRoom------>');
+
+
 
     });
 
