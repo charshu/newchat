@@ -252,6 +252,10 @@
 		font-size: 18px;
 		text-align: left;
 	}
+	.unread{
+		font-size: 40px;
+
+	}
 
 
 
@@ -273,10 +277,23 @@
 	});
 
 	// listener, whenever the server emits 'updatechat', this updates the chat body
-	socket.on('updatechat', function(username, data) {
-		$('#conversation').append('<b>' + username + ':</b> ' + data + '<br>');
+	socket.on('updatechat', function(username, msg) {
+		$('#conversation').append('<b>' + username + ':</b> ' + msg + '<br>');
 	});
+	socket.on('getoldchat',function(read_msg,unread_msg){
+		$('#conversation').empty();
+	//	alert(data[0].fname);
+		$.each(read_msg, function(key, value) {
+			$('#conversation').append('<b>' + value.fname + ':</b> ' + value.msg + '<br>');
+		});
+		if(unread_msg.length > 0){
+			$('#conversation').append('<b class="unread"> Unread </b><br>');
+			$.each(unread_msg, function(key, value) {
+				$('#conversation').append('<b>' + value.fname + ':</b> ' + value.msg + '<br>');
+			});
+		}
 
+	});
 
 	// listener, whenever the server emits 'updaterooms', this updates the room the client is in
 	socket.on('updaterooms', function(rooms, cur_room) {
@@ -296,6 +313,7 @@
 	});
 
 
+
 	function switchRoom(index) {
 			//alert('index ' + index);
 		//	alert('temp_rooms ' + temp_rooms);
@@ -304,9 +322,11 @@
 				if(key == index){
 					//	alert('switch to room ' + value.rname);
 					socket.emit('switchRoom', '<%= user.id %>', value);
+
 				}
 
 		});
+
 
 
 

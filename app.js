@@ -83,20 +83,25 @@ io.sockets.on('connection', function(socket) {
 
     });
 
+    //how to get chat before leaving
+    // SELECT msg FROM(SELECT B.fid, B.rid, B.jointime, B.leavetime FROM(SELECT * FROM room where rname = 'dd') as A, joinroom as B where B.fid = '1386936317999356'
+    //     and A.rid = B.rid) as C, message WHERE C.rid = message.rid and message.senttime > C.jointime and message.senttime < C.leavetime
+    //how to get chat after leaving
+    // SELECT msg FROM(SELECT B.fid, B.rid, B.jointime, B.leavetime FROM(SELECT * FROM room where rname = 'dd') as A, joinroom as B where B.fid = '1386936317999356'
+    //     and A.rid = B.rid) as C, message WHERE C.rid = message.rid and message.senttime > C.jointime and message.senttime > C.leavetime
 
-    socket.on('openchat', function(user_id) {
+    socket.on('getchat', function(user_id) {
 
-        con.query('SELECT fid,msg,senttime FROM message WHERE rname=\'' + socket.room + '\'', function(err, rows) {
-            if (err) console.log(err);
-            else if (rows.length == 0) console.log('no msg !');
-            else {
-                console.log(rows);
-                console.log('rid of ' + socket.room + ' is ' + rows[0].rid);
-            }
+        con.query('SELECT msg FROM(SELECT B.fid, B.rid, B.jointime, B.leavetime FROM(SELECT * FROM room where rname = \'' + socket.room + '\') as A, joinroom as B where B.fid = \'' + user_id +
+            '\' and A.rid = B.rid) as C, message WHERE C.rid = message.rid and message.senttime > C.jointime and message.senttime < C.leavetime',
+            function(err, rows) {
+                if (err) console.log(err);
+                else {
+                    console.log(rows);
 
+                }
 
-
-        });
+            });
 
     });
 
@@ -168,6 +173,7 @@ io.sockets.on('connection', function(socket) {
                     });
 
                 }
+
                 //has joined before,so instantly update leavetime
                 console.log('[LOG] UPDATING LEAVETIME user: ' + socket.username);
                 con.query('SELECT rid FROM room WHERE rname=\'' + oldroom + '\'', function(err, rows) {
@@ -182,17 +188,45 @@ io.sockets.on('connection', function(socket) {
                         });
                     }
 
-                    console.log('[LOG] SOCKET SETTING AND EMIT CHAT TO THE OTHERS');
+                    //  console.log('[LOG] SOCKET SETTING AND EMIT CHAT TO THE OTHERS');
                     socket.leave(oldroom);
                     socket.join(newroom);
-                    socket.emit('updatechat', 'SERVER', 'you have connected to ' + newroom);
-                    // sent message to OLD room
-                    socket.broadcast.to(oldroom).emit('updatechat', 'SERVER', socket.username + ' has left this room');
-                    // update socket session room title
                     socket.room = newroom;
-                    socket.broadcast.to(newroom).emit('updatechat', 'SERVER', socket.username + ' has joined this room');
+                    console.log('[LOG] GET MESSAGES....');
+                    //socket.emit('updatechat', 'SERVER', 'you have connected to ' + newroom);
+                    con.query('SELECT fname,msg FROM user,(SELECT B.fid, B.rid, B.jointime, B.leavetime FROM(SELECT * FROM room where rname = \'' + socket.room + '\') as A, joinroom as B where B.fid = \'' + user_id +
+                        '\' and A.rid = B.rid) as C, message WHERE C.rid = message.rid and message.senttime > C.jointime and message.senttime < C.leavetime and user.fid = message.fid ORDER BY message.senttime  ASC ',
+                        function(err, read_msg) {
+                            if (err) console.log(err);
+                            else if (rows.length == 0) console.log('[LOG] NO MESSAGE');
+                            else {
+
+                                con.query('SELECT fname,msg FROM user,(SELECT B.fid, B.rid, B.jointime, B.leavetime FROM(SELECT * FROM room where rname = \'' + socket.room + '\') as A, joinroom as B where B.fid = \'' + user_id +
+                                    '\' and A.rid = B.rid) as C, message WHERE C.rid = message.rid and message.senttime > C.jointime and message.senttime > C.leavetime and user.fid = message.fid ORDER BY message.senttime  ASC ',
+                                    function(err, unread_msg) {
+                                        if (err) console.log(err);
+                                        else if (rows.length == 0) console.log('[LOG] NO MESSAGE');
+                                        else {
+                                            socket.emit('getoldchat', read_msg,unread_msg);
+                                        }
+
+                                    });
+
+                            }
+
+                        });
+
+                    socket.emit('updatechat', 'SERVER', ' <--UNREAD-->');
+                    // sent message to OLD room
+                    //  socket.broadcast.to(oldroom).emit('updatechat', 'SERVER', socket.username + ' has left this room');
+                    // update socket session room title
+
+                    //  socket.broadcast.to(newroom).emit('updatechat', 'SERVER', socket.username + ' has joined this room');
                     refreshListRoom();
-                  
+
+                    //get old chat when switch to new room
+
+
                 });
 
             });
@@ -257,7 +291,7 @@ passport.use(new Strategy({
         clientID: 1549122352049988,
         clientSecret: '221c989545ba03147c82812eceaa8b30',
         callbackURL: 'http://localhost:8080/login/facebook/return',
-        profileFields: ['id', 'name', 'email', 'birthday', 'displayName', 'about', 'gender', 'profileUrl', 'photos']
+        profileFields: ['id', 'name', 'email', 'birthday', 'displayName', 'about', 'gender', 'profileUrl', 'picture.type(large)']
 
     },
     function(accessToken, refreshToken, profile, cb) {
