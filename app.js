@@ -36,33 +36,45 @@ io.sockets.on('connection', function(socket) {
         // store the username in the socket session for this client
         socket.username = givenName;
         // store the room name in the socket session for this client
-        socket.room = 'public';
-        socket.join(socket.room);
+
+
         // add the client's username to the global list
         var user_data = {
             fid: user_id,
             fname: givenName
         };
-        con.query('select fid from user where fid=\"?\"', user_id, function(err, rows) {
-            console.log('<----adduser----->');
-            console.log(rows);
+
+        con.query('select fid from user where fid=\'' + user_id + '\'', function(err, rows) {
+            console.log('[LOG] USER CHECK username: ' + givenName);
             if (err) {
                 console.log(err);
-                console.log('Selecting problem !');
+                console.log('[ERR]SELECTING ERROR!');
             } else if (rows.length == 0) {
+                console.log('[LOG] USER NOT FOUND IN USER TABLE, INSERTING USER....');
                 con.query('INSERT INTO user SET ?', user_data, function(err, res) {
-                    if (err) {
-                        console.log(err);
-                        console.log('userID: ' + givenName + ' fid= ' + user_id + 'has already added!');
-                    } else console.log('add userID: ' + givenName + ' fid= ' + user_id);
+                    if (err) console.log(err);
+                    else console.log('username: ' + givenName + ' fid= ' + user_id + 'has already added!');
                 });
-            }
-            //  console.log('<--------->');
-        });
+                //update joinroom
+                console.log('[LOG] JOIN USER TO PUBLIC ROOM...');
+                var joinroom_data = {
+                    fid: user_id,
+                    rid: '1'
+                };
+                con.query('INSERT INTO joinroom SET ?', joinroom_data, function(err, res) {
+                    if (err) console.log(err);
+                    else {
+                        console.log('[LOG] USER username: ' + socket.username + ' JOIN IN *PUBLIC ROOM');
 
-        // send client to room 1
-        // socket.join('room1');
-        // echo to client they've connected
+                    }
+                });
+
+            } else console.log('[LOG] USER HAS ALREADY ADDED');
+
+
+        });
+        socket.room = 'public';
+        socket.join('public');
         socket.emit('updatechat', 'SERVER', 'you have connected to ' + socket.room);
         // echo to room 1 that a person has connected to their room
         socket.broadcast.to('public').emit('updatechat', 'SERVER', givenName + ' has connected');
@@ -87,14 +99,15 @@ io.sockets.on('connection', function(socket) {
         });
 
     });
+
     // when the client emits 'sendchat', this listens and executes
     socket.on('sendchat', function(user_id, data) {
-        //insert msg to message db
-        console.log('<----sendchat----->');
+
         con.query('SELECT rid FROM room WHERE rname=\'' + socket.room + '\'', function(err, rows) {
             if (err) console.log(err);
             else if (rows.length == 0) console.log('rid not found !');
             else {
+
                 console.log(rows);
                 console.log('rid of ' + socket.room + ' is ' + rows[0].rid);
             }
@@ -111,32 +124,19 @@ io.sockets.on('connection', function(socket) {
 
         });
         //tell all client
-        console.log(socket.room + socket.username + data);
+        console.log('[LOG] SEND CHAT TO ' + socket.room + ' SENDER : ' + socket.username + ' msg: ' + data);
         io.sockets.in(socket.room).emit('updatechat', socket.username, data);
-        //  console.log('<----------------->');
+
     });
 
     socket.on('addRoom', function(user_id, newroom_name) {
-        console.log('<----addRoom----->');
+        console.log('[LOG] ADD NEW ROOM INTO ROOM TABLE');
         con.query('INSERT INTO room SET ?', {
             rname: newroom_name
         }, function(err, rows) {
             if (err) console.log(err);
             else {
-
-                console.log('rid: ' + rows.insertId + ' rname: ' + newroom_name + ' is added');
-
-                var joinroom_data = {
-                    fid: user_id,
-                    rid: rows.insertId
-
-                };
-                con.query('INSERT INTO joinroom SET ?', joinroom_data, function(err, res) {
-                    if (err) console.log(err);
-                    else
-                        console.log('admin join');
-                });
-                console.log("a room added!");
+                console.log('[LOG] rid: ' + rows.insertId + ' rname: ' + newroom_name + ' is added');
             }
         });
         refreshListRoom();
@@ -144,32 +144,60 @@ io.sockets.on('connection', function(socket) {
     });
     //UPDATE joinroom SET leavetime = CURRENT_TIMESTAMP WHERE fid = '1386936317999356' and rid='2'
     socket.on('switchRoom', function(user_id, room) {
-        console.log('<----switchRoom----->');
-        console.log('switch to room ' + room.rname + ' from: ' + socket.room);
+        var oldroom = socket.room;
+        var newroom = room.rname;
+        var newroom_id = room.rid;
+        console.log('[LOG] SWITCH TO rname: ' + newroom + ' FROM rname: ' + oldroom);
+        //check if join new room for the first time
+        //SELECT joinroom.fid,joinroom.rid,room.rname,joinroom.jointime,joinroom.leavetime from joinroom,room where room.rname = 'zz' and joinroom.rid = room.rid and joinroom.fid = '1034807556602456'
+        con.query('SELECT joinroom.fid,joinroom.rid,room.rname,joinroom.jointime,joinroom.leavetime from joinroom,room where room.rname = \'' + newroom + '\' and joinroom.rid = room.rid and joinroom.fid = \'' + user_id + '\'',
+            function(err, rows) {
+                if (err) console.log(err);
+                else if (rows.length == 0) {
+                    //first time insert join room row
+                    console.log('[LOG] USER DID NOT JOIN IN BEFORE \n[LOG] INSERTING user: ' + socket.username + ' TO rname: ' + newroom);
+                    var joinroom_data = {
+                        fid: user_id,
+                        rid: newroom_id
 
-        con.query('SELECT rid FROM room WHERE rname=\'' + socket.room + '\'', function(err, rows) {
-            if (err) console.log(err);
-            else if (rows.length == 0) console.log('rid not found !');
-            else {
-                console.log(rows);
-                console.log('old roomm: ' + socket.room + ' rid : ' + rows[0].rid);
-                con.query('UPDATE joinroom SET leavetime = CURRENT_TIMESTAMP WHERE fid = \'' + user_id + '\' and rid=\'' + rows[0].rid + '\'', function(err, res) {
+                    };
+
+                    con.query('INSERT INTO joinroom SET ?', joinroom_data, function(err, res) {
+                        if (err) console.log(err);
+
+                    });
+
+                }
+                //has joined before,so instantly update leavetime
+                console.log('[LOG] UPDATING LEAVETIME user: ' + socket.username);
+                con.query('SELECT rid FROM room WHERE rname=\'' + oldroom + '\'', function(err, rows) {
                     if (err) console.log(err);
-                    else console.log('update complete');
+                    else if (rows.length == 0) console.log('[ERR] rid not found !');
+                    else {
+                        // console.log(rows);
+                        // console.log('old roomm: ' + oldroom + ' rid : ' + rows[0].rid);
+                        con.query('UPDATE joinroom SET leavetime = CURRENT_TIMESTAMP WHERE fid = \'' + user_id + '\' and rid=\'' + rows[0].rid + '\'', function(err, res) {
+                            if (err) console.log(err);
+                            else console.log('[LOG] DONE UPDATING');
+                        });
+                    }
+
+                    console.log('[LOG] SOCKET SETTING AND EMIT CHAT TO THE OTHERS');
+                    socket.leave(oldroom);
+                    socket.join(newroom);
+                    socket.emit('updatechat', 'SERVER', 'you have connected to ' + newroom);
+                    // sent message to OLD room
+                    socket.broadcast.to(oldroom).emit('updatechat', 'SERVER', socket.username + ' has left this room');
+                    // update socket session room title
+                    socket.room = newroom;
+                    socket.broadcast.to(newroom).emit('updatechat', 'SERVER', socket.username + ' has joined this room');
+                    refreshListRoom();
+                  
                 });
-            }
-            socket.leave(socket.room);
-            socket.join(room.rname);
-            socket.emit('updatechat', 'SERVER', 'you have connected to ' + room.rname);
-            // sent message to OLD room
-            socket.broadcast.to(socket.room).emit('updatechat', 'SERVER', socket.username + ' has left this room');
-            // update socket session room title
-            socket.room = room.rname;
-            socket.broadcast.to(room.rname).emit('updatechat', 'SERVER', socket.username + ' has joined this room');
-            refreshListRoom();
-            // socket.emit('updaterooms', rooms, newroom);
-            //console.log('<------end switchRoom------>');
-        });
+
+            });
+
+
 
 
 
@@ -188,11 +216,11 @@ io.sockets.on('connection', function(socket) {
     });
 
     function refreshListRoom() {
-        console.log('<------request room list ! -------->');
+
         //console.log('SELECT rname FROM room,joinchat WHERE joinchat.fid = \'' + user_id + '\' and room.rid = joinchat.rid');
         con.query('SELECT rid,rname FROM room', function(err, rows) {
             if (err) console.log(err);
-            else if (rows.length == 0) console.log("You are not join in any rooms.");
+            else if (rows.length == 0) console.log('[LOG] YOU ARE NOT IN ANY ROOM');
             else {
                 rooms = [];
 
@@ -201,8 +229,8 @@ io.sockets.on('connection', function(socket) {
                         rid: rows[i].rid,
                         rname: rows[i].rname
                     });
-
                 }
+                console.log('[LOG] REFRESH LIST ROOM AND EMIT UPDATING ROOM TO THE OTHERS');
                 console.log(rooms);
             }
             io.sockets.emit('updaterooms', rooms, socket.room);

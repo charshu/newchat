@@ -8,6 +8,7 @@
 	socket.on('connect', function() {
 		// call the server-side function 'adduser' and send one parameter (value of prompt)
 		socket.emit('adduser', '<%= user.name.givenName %>', '<%=  user.id %>');
+
 	});
 
 	// listener, whenever the server emits 'updatechat', this updates the chat body
