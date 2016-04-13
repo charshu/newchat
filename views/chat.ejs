@@ -1,13 +1,13 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
 <script>
-
 	var socket = io.connect('http://localhost:8080');
-	var current_room;
+	var temp_cur_room;
+	var temp_rooms = [];
 	// on connection to server, ask for user's name with an anonymous callback
 	socket.on('connect', function() {
 		// call the server-side function 'adduser' and send one parameter (value of prompt)
-		socket.emit('adduser', '<%= user.name.givenName %>','<%=  user.id %>' );
+		socket.emit('adduser', '<%= user.name.givenName %>', '<%=  user.id %>');
 	});
 
 	// listener, whenever the server emits 'updatechat', this updates the chat body
@@ -16,31 +16,35 @@
 	});
 
 	// listener, whenever the server emits 'updaterooms', this updates the room the client is in
-	socket.on('updaterooms', function(rooms, current_room) {
-		this.current_room = current_room;
+	socket.on('updaterooms', function(rooms, cur_room) {
+		temp_cur_room = cur_room;
+		temp_rooms = rooms;
 		$('#rooms').empty();
-		$.each(rooms, function(key, value) {
-			if (value == current_room) {
-				$('#rooms').append('<div>' + value + '</div>');
+		$.each(temp_rooms, function(key, value) {
+			//  alert('key:'+key+' value:'+value.rname);
+			//  alert(value.rname);
+			if (value.rname == temp_cur_room) {
+				$('#rooms').append('<div>' + value.rname + '</div>');
 			} else {
-				$('#rooms').append('<div><a href="#" onclick="switchRoom(\'<%=  user.id %>\',\'' + value + '\')">' + value + '</a></div>');
+				$('#rooms').append('<div><a href="#" onclick="switchRoom(\'' + key + '\')">' + value.rname + '</a></div>');
 			}
 		});
 	});
 
-	function switchRoom(user_id,room) {
-		socket.emit('switchRoom',user_id , room);
-	}
-	socket.on('updateAddRooms', function(rooms) {
-		$('#rooms').empty();
-		$.each(rooms, function(key, value) {
-			if (value == this.current_room) {
-				$('#rooms').append('<div>' + value + '</div>');
-			} else {
-				$('#rooms').append('<div><a href="#" onclick="switchRoom(\'' + value + '\')">' + value + '</a></div>');
-			}
+	function switchRoom(index) {
+			//alert('index ' + index);
+		//	alert('temp_rooms ' + temp_rooms);
+		$.each(temp_rooms, function(key, value) {
+				//alert('this.rooms ' + this.rooms);
+				if(key == index){
+					//	alert('switch to room ' + value.rname);
+					socket.emit('switchRoom', '<%= user.id %>', value);
+				}
 		});
-	});
+
+
+
+	}
 
 	// on load of page
 	$(function() {
@@ -50,7 +54,7 @@
 			var message = $('#data').val();
 			$('#data').val('');
 			// tell server to execute 'sendchat' and send along one parameter
-			socket.emit('sendchat', message);
+			socket.emit('sendchat', '<%= user.id %>', message);
 		});
 
 		// when the client hits ENTER on their keyboard
@@ -63,7 +67,7 @@
 		$('#addRoomButton').click(function() {
 			var newroom_name = $('#roomName').val();
 			$('#roomName').val('');
-			socket.emit('addRoom','<%= user.id %>', newroom_name);
+			socket.emit('addRoom', '<%= user.id %>', newroom_name);
 		});
 
 
@@ -71,6 +75,33 @@
 
 	});
 </script>
+
+<style>
+	.container {
+		display: flex;
+		flex-direction: row;
+		align-content: center;
+		justify-content: space-between;
+	}
+
+	.data1 {
+		background-color: red;
+		width: 30%;
+		height: 200px;
+	}
+
+	.data2 {
+		background-color: tomato;
+		width: 70%;
+		height: 200px;
+	}
+</style>
+
+<div class="container">
+	<div class="data1"></div>
+	<div class="data2"></div>
+
+</div>
 <div style="float:left;width:100px;border-right:1px solid black;height:300px;padding:10px;overflow:scroll-y;">
 	<b>ROOMS</b>
 	<input id="roomName" style="width:100px;" />
@@ -83,6 +114,7 @@
 	<input type="button" id="datasend" value="send" />
 </div>
 <div style="float:left;width:300px;height:250px;overflow:scroll-y;padding:10px;">
-	USERNAME : <div id="username"></div>
+	USERNAME :
+	<div id="username"></div>
 
 </div>

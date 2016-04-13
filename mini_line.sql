@@ -30,7 +30,7 @@ CREATE TABLE `joinroom` (
   `fid` varchar(128) NOT NULL,
   `rid` int(4) NOT NULL,
   `jointime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `leavetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `leavetime` timestamp
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
