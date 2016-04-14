@@ -207,7 +207,7 @@ io.sockets.on('connection', function(socket) {
                                         if (err) console.log(err);
                                         else if (rows.length == 0) console.log('[LOG] NO MESSAGE');
                                         else {
-                                            socket.emit('getoldchat', read_msg,unread_msg);
+                                            socket.emit('getoldchat', read_msg, unread_msg);
                                         }
 
                                     });
@@ -216,7 +216,7 @@ io.sockets.on('connection', function(socket) {
 
                         });
 
-                    socket.emit('updatechat', 'SERVER', ' <--UNREAD-->');
+                    //  socket.emit('updatechat', 'SERVER', ' <--UNREAD-->');
                     // sent message to OLD room
                     //  socket.broadcast.to(oldroom).emit('updatechat', 'SERVER', socket.username + ' has left this room');
                     // update socket session room title
