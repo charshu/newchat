@@ -1,0 +1,20 @@
+{
+  "name": "miniline",
+  "description": "example chat application with socket.io",
+  "main": "",
+  "authors": [
+    "Vachirakorn Rungsikawanich <vachirakorn@hotmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/charshu/newchat",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap-social": "^4.12.0"
+  }
+}

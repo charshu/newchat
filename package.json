@@ -4,8 +4,8 @@
      "version": "0.0.1",
      "dependencies": {
         "socket.io": "",
-        "grunt": "~0.4.5",
-    "grunt-contrib-watch": "^0.6.1",
+        "grunt": "~1.0.1",
+    "grunt-contrib-watch": "^1.0.0",
     "grunt-execute": "^0.2.2",
     "body-parser": "^1.13.2",
     "connect-ensure-login": "^0.1.1",
@@ -14,7 +14,7 @@
     "express": "^4.13.1",
     "express-session": "^1.11.3",
     "morgan": "^1.6.1",
-    "passport": "^0.2.2",
+    "passport": "^0.3.2",
     "passport-facebook": "^2.0.0"
      }
 }
