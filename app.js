@@ -35,6 +35,7 @@ io.sockets.on('connection', function(socket) {
     socket.on('adduser', function(givenName, user_id) {
         // store the username in the socket session for this client
         socket.username = givenName;
+        socket.fid = user_id;
         // store the room name in the socket session for this client
 
 
@@ -43,7 +44,7 @@ io.sockets.on('connection', function(socket) {
             fid: user_id,
             fname: givenName
         };
-
+        console.log('[LOG] welcome fid: ' + socket.fid);
         con.query('select fid from user where fid=\'' + user_id + '\'', function(err, rows) {
             console.log('[LOG] USER CHECK username: ' + givenName);
             if (err) {
@@ -239,34 +240,53 @@ io.sockets.on('connection', function(socket) {
 
 
     // when the user disconnects.. perform this
-    socket.on('disconnect', function() {
-        // remove the username from global usernames list
-        delete usernames[socket.username];
-        // update list of users in chat, client-side
-        io.sockets.emit('updateusers', usernames);
-        // echo globally that this client has left
-        socket.broadcast.emit('updatechat', 'SERVER', socket.username + ' has disconnected');
-        socket.leave(socket.room);
+    socket.on('leaveroom', function(rid) {
+
     });
 
     function refreshListRoom() {
 
         //console.log('SELECT rname FROM room,joinchat WHERE joinchat.fid = \'' + user_id + '\' and room.rid = joinchat.rid');
-        con.query('SELECT rid,rname FROM room', function(err, rows) {
+        con.query('SELECT rid,rname FROM room', function(err, roomdata) {
             if (err) console.log(err);
-            else if (rows.length == 0) console.log('[LOG] YOU ARE NOT IN ANY ROOM');
+            else if (roomdata.length == 0) console.log('[LOG] YOU ARE NOT IN ANY ROOM');
             else {
-                rooms = [];
 
-                for (var i = 0; i < rows.length; i++) {
-                    rooms.push({
-                        rid: rows[i].rid,
-                        rname: rows[i].rname
-                    });
-                }
+                con.query('SELECT fid,rid FROM joinroom WHERE fid=\'' + socket.fid + '\'', function(err, joinroomdata) {
+
+
+
+                    rooms = [];
+
+                    for (var i = 0; i < roomdata.length; i++) {
+                        for (var j = 0; j < joinroomdata.length; j++) {
+                            if (roomdata[i].rid == joinroomdata[j].rid) {
+                                rooms.push({
+                                    rid: roomdata[i].rid,
+                                    rname: roomdata[i].rname,
+                                    isjoin: true
+                                });
+                                break;
+                            }
+
+                        }
+                        //if user has not joined
+                        if(j == joinroomdata.length)
+                        rooms.push({
+                            rid: roomdata[i].rid,
+                            rname: roomdata[i].rname,
+                            isjoin: false
+                        });
+
+                    }
+                });
+
                 console.log('[LOG] REFRESH LIST ROOM AND EMIT UPDATING ROOM TO THE OTHERS');
                 console.log(rooms);
+
+
             }
+
             io.sockets.emit('updaterooms', rooms, socket.room);
         });
         //console.log('<------end request room list -------->');
@@ -340,8 +360,8 @@ app.use(require('express-session')({
 }));
 
 //static path specify
-app.use( express.static( "public" ) );
-app.use('/bower_components',express.static(__dirname + '/bower_components'));
+app.use(express.static("public"));
+app.use('/bower_components', express.static(__dirname + '/bower_components'));
 // Initialize Passport and restore authentication state, if any, from the
 // session.
 app.use(passport.initialize());
@@ -390,4 +410,4 @@ app.get('/profile',
         });
     });
 
-    server.listen(8080);
+server.listen(8080);
