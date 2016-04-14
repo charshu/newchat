@@ -11,8 +11,8 @@ var mysql = require("mysql");
 var con = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "5157b79d",
-    database: "chatdb"
+    password: "admin",
+    database: "chatdb2"
 });
 con.connect(function(err) {
     if (err) {
