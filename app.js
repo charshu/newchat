@@ -341,7 +341,7 @@ app.use(require('express-session')({
 
 //static path specify
 app.use( express.static( "public" ) );
-
+app.use('/bower_components',express.static(__dirname + '/bower_components'));
 // Initialize Passport and restore authentication state, if any, from the
 // session.
 app.use(passport.initialize());

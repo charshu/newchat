@@ -1,425 +1,445 @@
-<style>
-	.container {
-		display: flex;
-		flex-direction: row;
-		align-content: center;
-		align-items: flex-start;
-		height: 100%;
-		/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,f1f1f1+50,e1e1e1+51,f6f6f6+100;White+Gloss+%231 */
-		background: rgb(255, 255, 255);
-		/* Old browsers */
-		background: -moz-linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(241, 241, 241, 1) 50%, rgba(225, 225, 225, 1) 51%, rgba(246, 246, 246, 1) 100%);
-		/* FF3.6-15 */
-		background: -webkit-linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(241, 241, 241, 1) 50%, rgba(225, 225, 225, 1) 51%, rgba(246, 246, 246, 1) 100%);
-		/* Chrome10-25,Safari5.1-6 */
-		background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(241, 241, 241, 1) 50%, rgba(225, 225, 225, 1) 51%, rgba(246, 246, 246, 1) 100%);
-		/* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-		filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f6f6f6', GradientType=0);
-		/* IE6-9 */
-	}
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" dir="ltr">
 
-	.roomArea {
-		/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f2f6f8+0,d8e1e7+50,b5c6d0+51,e0eff9+100;Grey+Gloss+%232 */
-		background: rgb(242, 246, 248);
-		/* Old browsers */
-		background: -moz-linear-gradient(top, rgba(242, 246, 248, 1) 0%, rgba(216, 225, 231, 1) 50%, rgba(181, 198, 208, 1) 51%, rgba(224, 239, 249, 1) 100%);
-		/* FF3.6-15 */
-		background: -webkit-linear-gradient(top, rgba(242, 246, 248, 1) 0%, rgba(216, 225, 231, 1) 50%, rgba(181, 198, 208, 1) 51%, rgba(224, 239, 249, 1) 100%);
-		/* Chrome10-25,Safari5.1-6 */
-		background: linear-gradient(to bottom, rgba(242, 246, 248, 1) 0%, rgba(216, 225, 231, 1) 50%, rgba(181, 198, 208, 1) 51%, rgba(224, 239, 249, 1) 100%);
-		/* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-		filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#f2f6f8', endColorstr='#e0eff9', GradientType=0);
-		/* IE6-9 */
-		width: calc(20%-20px);
-		/*height: calc(100% - 20px);*/
-		border: 1px solid #B9BDC1;
-		color: #797979;
-		-moz-box-shadow: 0 2px 4px #bbb inset;
-		-webkit-box-shadow: 0 2px 4px #BBB inset;
-		box-shadow: 0 2px 4px #BBB inset;
-		-moz-border-radius: 3px;
-		-webkit-border-radius: 3px;
-		border-radius: 3px;
-		padding: 10px;
-	}
+<head>
+	<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
 
-	.room {
-		-moz-border-radius-bottomright: 30px;
-		-webkit-border-bottom-right-radius: 30px;
-		border-bottom-right-radius: 30px;
-		border: 1px solid #848484;
-		outline: 0;
-		height: 25px;
-		background: transparent url(http://html-generator.weebly.com/files/theme/input-text-8.png) repeat-x;
-		box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-		margin: 10px;
-		padding-left: 5px;
-		padding-right: 20px;
-		display: block;
-	}
+	<meta http-equiv="X-UA-Compatible" content="chrome=1">
+	<meta name="google" value="notranslate">
 
-	.room:hover {
-		color: grey;
-		box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-	}
-	/*--------------------------------------------*/
+	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="bower_components/bootstrap-social/bootstrap-social.css">
+	<link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css">
+	<title>MiniLine</title>
+</head>
 
-	.chatArea {
-		background-color: #F8E0E6;
-		width: 80%;
-		height: 100%;
-		border: 1px solid #B9BDC1;
-		color: #797979;
-		-moz-box-shadow: 0 2px 4px #bbb inset;
-		-webkit-box-shadow: 0 2px 4px #BBB inset;
-		box-shadow: 0 2px 4px #BBB inset;
-		-moz-border-radius: 3px;
-		-webkit-border-radius: 3px;
-		border-radius: 3px;
-	}
-
-	.chatLog {
-		width: calc(100%-20px);
-		height: calc(100% - 55px);
-		/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f4e9e6+0,e2d0c7+50,ddc6bc+51,eac0c2+100 */
-		background: rgb(244, 233, 230);
-		/* Old browsers */
-		background: -moz-linear-gradient(top, rgba(244, 233, 230, 1) 0%, rgba(226, 208, 199, 1) 50%, rgba(221, 198, 188, 1) 51%, rgba(234, 192, 194, 1) 100%);
-		/* FF3.6-15 */
-		background: -webkit-linear-gradient(top, rgba(244, 233, 230, 1) 0%, rgba(226, 208, 199, 1) 50%, rgba(221, 198, 188, 1) 51%, rgba(234, 192, 194, 1) 100%);
-		/* Chrome10-25,Safari5.1-6 */
-		background: linear-gradient(to bottom, rgba(244, 233, 230, 1) 0%, rgba(226, 208, 199, 1) 50%, rgba(221, 198, 188, 1) 51%, rgba(234, 192, 194, 1) 100%);
-		/* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-		filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#f4e9e6', endColorstr='#eac0c2', GradientType=0);
-		/* IE6-9 */
-		padding: 10px;
-	}
-
-	.chatInput {
-		/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#4c4c4c+0,595959+12,666666+25,474747+39,2c2c2c+50,000000+51,111111+60,2b2b2b+76,1c1c1c+91,131313+100;Black+Gloss+%231 */
-		background: rgb(76, 76, 76);
-		/* Old browsers */
-		background: -moz-linear-gradient(top, rgba(76, 76, 76, 1) 0%, rgba(89, 89, 89, 1) 12%, rgba(102, 102, 102, 1) 25%, rgba(71, 71, 71, 1) 39%, rgba(44, 44, 44, 1) 50%, rgba(0, 0, 0, 1) 51%, rgba(17, 17, 17, 1) 60%, rgba(43, 43, 43, 1) 76%, rgba(28, 28, 28, 1) 91%, rgba(19, 19, 19, 1) 100%);
-		/* FF3.6-15 */
-		background: -webkit-linear-gradient(top, rgba(76, 76, 76, 1) 0%, rgba(89, 89, 89, 1) 12%, rgba(102, 102, 102, 1) 25%, rgba(71, 71, 71, 1) 39%, rgba(44, 44, 44, 1) 50%, rgba(0, 0, 0, 1) 51%, rgba(17, 17, 17, 1) 60%, rgba(43, 43, 43, 1) 76%, rgba(28, 28, 28, 1) 91%, rgba(19, 19, 19, 1) 100%);
-		/* Chrome10-25,Safari5.1-6 */
-		background: linear-gradient(to bottom, rgba(76, 76, 76, 1) 0%, rgba(89, 89, 89, 1) 12%, rgba(102, 102, 102, 1) 25%, rgba(71, 71, 71, 1) 39%, rgba(44, 44, 44, 1) 50%, rgba(0, 0, 0, 1) 51%, rgba(17, 17, 17, 1) 60%, rgba(43, 43, 43, 1) 76%, rgba(28, 28, 28, 1) 91%, rgba(19, 19, 19, 1) 100%);
-		/* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-		filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#4c4c4c', endColorstr='#131313', GradientType=0);
-		/* IE6-9 */
-		display: flex;
-		align-items: center;
-		width: calc(100% - 10px) height: 25px;
-		padding: 5px;
-	}
-
-	.textbox {
-		background-color: white;
-		width: calc(100% - 20px);
-		height: 30px;
-		margin: 5px;
-		padding-left: 10px;
-		padding-right: 10px;
-		border: 1px solid #848484;
-		-webkit-border-radius: 30px;
-		-moz-border-radius: 30px;
-		border-radius: 30px;
-		outline: 0;
-	}
-
-	.button {
-		/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f2f6f8+0,d8e1e7+50,b5c6d0+51,e0eff9+100;Grey+Gloss+%232 */
-		background: rgb(242, 246, 248);
-		/* Old browsers */
-		background: -moz-linear-gradient(top, rgba(242, 246, 248, 1) 0%, rgba(216, 225, 231, 1) 50%, rgba(181, 198, 208, 1) 51%, rgba(224, 239, 249, 1) 100%);
-		/* FF3.6-15 */
-		background: -webkit-linear-gradient(top, rgba(242, 246, 248, 1) 0%, rgba(216, 225, 231, 1) 50%, rgba(181, 198, 208, 1) 51%, rgba(224, 239, 249, 1) 100%);
-		/* Chrome10-25,Safari5.1-6 */
-		background: linear-gradient(to bottom, rgba(242, 246, 248, 1) 0%, rgba(216, 225, 231, 1) 50%, rgba(181, 198, 208, 1) 51%, rgba(224, 239, 249, 1) 100%);
-		/* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-		filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#f2f6f8', endColorstr='#e0eff9', GradientType=0);
-		/* IE6-9 */
-		border-radius: 12px;
-		color: black;
-		border: 1px solid #848484;
-		-webkit-transition-duration: 0.4s;
-		/* Safari */
-		transition-duration: 0.4s;
-		height: 30px;
-		font-family: courier;
-		font-size: 14px;
-	}
-
-	.button:hover {
-		color: grey;
-		box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-	}
-	/*--------------------------------------------*/
-
-	.userArea {
-		width: 200px;
-		height: 100%;
-		display: flex;
-		flex-direction: column;
-	}
-
-	.userFace {
-		text-align: center;
-		/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ebe9f9+0,d8d0ef+50,cec7ec+51,c1bfea+100;Purple+3D+%231 */
-		background: rgb(235, 233, 249);
-		/* Old browsers */
-		background: -moz-linear-gradient(top, rgba(235, 233, 249, 1) 0%, rgba(216, 208, 239, 1) 50%, rgba(206, 199, 236, 1) 51%, rgba(193, 191, 234, 1) 100%);
-		/* FF3.6-15 */
-		background: -webkit-linear-gradient(top, rgba(235, 233, 249, 1) 0%, rgba(216, 208, 239, 1) 50%, rgba(206, 199, 236, 1) 51%, rgba(193, 191, 234, 1) 100%);
-		/* Chrome10-25,Safari5.1-6 */
-		background: linear-gradient(to bottom, rgba(235, 233, 249, 1) 0%, rgba(216, 208, 239, 1) 50%, rgba(206, 199, 236, 1) 51%, rgba(193, 191, 234, 1) 100%);
-		/* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-		filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#ebe9f9', endColorstr='#c1bfea', GradientType=0);
-		/* IE6-9 */
-		width: calc(100%-20px);
-		height: calc(40%-20px);
-		border: 1px solid #B9BDC1;
-		color: #797979;
-		-moz-box-shadow: 0 2px 4px #bbb inset;
-		-webkit-box-shadow: 0 2px 4px #BBB inset;
-		box-shadow: 0 2px 4px #BBB inset;
-		-moz-border-radius: 3px;
-		-webkit-border-radius: 3px;
-		border-radius: 3px;
-		padding: 10px;
-	}
-
-	.userLogo {
-		text-align: center;
-		/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,f1f1f1+50,e1e1e1+51,f6f6f6+100;White+Gloss+%231 */
-		background: rgb(255, 255, 255);
-		/* Old browsers */
-		background: -moz-linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(241, 241, 241, 1) 50%, rgba(225, 225, 225, 1) 51%, rgba(246, 246, 246, 1) 100%);
-		/* FF3.6-15 */
-		background: -webkit-linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(241, 241, 241, 1) 50%, rgba(225, 225, 225, 1) 51%, rgba(246, 246, 246, 1) 100%);
-		/* Chrome10-25,Safari5.1-6 */
-		background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(241, 241, 241, 1) 50%, rgba(225, 225, 225, 1) 51%, rgba(246, 246, 246, 1) 100%);
-		/* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-		filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f6f6f6', GradientType=0);
-		/* IE6-9 */
-		width: calc(100%-20px);
-		height: calc(30%-20px);
-		border: 1px solid #B9BDC1;
-		color: #797979;
-		-moz-box-shadow: 0 2px 4px #bbb inset;
-		-webkit-box-shadow: 0 2px 4px #BBB inset;
-		box-shadow: 0 2px 4px #BBB inset;
-		-moz-border-radius: 3px;
-		-webkit-border-radius: 3px;
-		border-radius: 3px;
-		padding: 10px;
-	}
-
-	.userCredit {
-		text-align: center;
-		/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ebe9f9+0,d8d0ef+50,cec7ec+51,c1bfea+100;Purple+3D+%231 */
-		background: rgb(235, 233, 249);
-		/* Old browsers */
-		background: -moz-linear-gradient(top, rgba(235, 233, 249, 1) 0%, rgba(216, 208, 239, 1) 50%, rgba(206, 199, 236, 1) 51%, rgba(193, 191, 234, 1) 100%);
-		/* FF3.6-15 */
-		background: -webkit-linear-gradient(top, rgba(235, 233, 249, 1) 0%, rgba(216, 208, 239, 1) 50%, rgba(206, 199, 236, 1) 51%, rgba(193, 191, 234, 1) 100%);
-		/* Chrome10-25,Safari5.1-6 */
-		background: linear-gradient(to bottom, rgba(235, 233, 249, 1) 0%, rgba(216, 208, 239, 1) 50%, rgba(206, 199, 236, 1) 51%, rgba(193, 191, 234, 1) 100%);
-		/* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-		filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#ebe9f9', endColorstr='#c1bfea', GradientType=0);
-		/* IE6-9 */
-		width: calc(100%-20px);
-		height: calc(30%-20px);
-		border: 1px solid #B9BDC1;
-		color: #797979;
-		-moz-box-shadow: 0 2px 4px #bbb inset;
-		-webkit-box-shadow: 0 2px 4px #BBB inset;
-		box-shadow: 0 2px 4px #BBB inset;
-		-moz-border-radius: 3px;
-		-webkit-border-radius: 3px;
-		border-radius: 3px;
-		padding: 10px;
-	}
-
-	p {
-		font-family: courier;
-		font-size: 18px;
-		text-align: left;
-	}
-
-	.unreadbox {
-		display: flex;
-		justify-content: center;
-		align-content: center;
-
-	}
-
-	hr {
-		width: 40%;
-		color: black;
-	}
-
-	.unreadtext {
-		text-align: center;
-		vertical-align:  middle;
-		background-color: rgba(0, 0, 0, 0.5);
-		border-radius: 5px;
-		font-size: 12px;
-		color: white;
-		width: 20%;
-	}
-</style>
-
-
-
-<script src="/socket.io/socket.io.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
-<script>
-	var socket = io.connect('http://localhost:8080');
-	var temp_cur_room;
-	var temp_rooms = [];
-	// on connection to server, ask for user's name with an anonymous callback
-	socket.on('connect', function() {
-		// call the server-side function 'adduser' and send one parameter (value of prompt)
-		socket.emit('adduser', '<%= user.name.givenName %>', '<%=  user.id %>');
-
-	});
-
-	// listener, whenever the server emits 'updatechat', this updates the chat body
-	socket.on('updatechat', function(username, msg) {
-		$('#conversation').append('<b>' + username + ':</b> ' + msg + '<br>');
-	});
-	socket.on('getoldchat', function(read_msg, unread_msg) {
-		$('#conversation').empty();
-		//	alert(data[0].fname);
-		$.each(read_msg, function(key, value) {
-			$('#conversation').append('<b>' + value.fname + ':</b> ' + value.msg + '<br>');
-		});
-
-		if (unread_msg.length > 0) {
-			$('#conversation').append('<div class="unreadbox"><hr></hr><div class="unreadtext">Unread</div><hr></hr> </div>');
-			$.each(unread_msg, function(key, value) {
-				$('#conversation').append('<b>' + value.fname + ':</b> ' + value.msg + '<br>');
-			});
+<body>
+	<style>
+		.container {
+			display: flex;
+			flex-direction: row;
+			align-content: center;
+			align-items: flex-start;
+			height: 100%;
+			/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,f1f1f1+50,e1e1e1+51,f6f6f6+100;White+Gloss+%231 */
+			background: rgb(255, 255, 255);
+			/* Old browsers */
+			background: -moz-linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(241, 241, 241, 1) 50%, rgba(225, 225, 225, 1) 51%, rgba(246, 246, 246, 1) 100%);
+			/* FF3.6-15 */
+			background: -webkit-linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(241, 241, 241, 1) 50%, rgba(225, 225, 225, 1) 51%, rgba(246, 246, 246, 1) 100%);
+			/* Chrome10-25,Safari5.1-6 */
+			background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(241, 241, 241, 1) 50%, rgba(225, 225, 225, 1) 51%, rgba(246, 246, 246, 1) 100%);
+			/* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+			filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f6f6f6', GradientType=0);
+			/* IE6-9 */
 		}
 
-	});
+		.roomArea {
+			/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f2f6f8+0,d8e1e7+50,b5c6d0+51,e0eff9+100;Grey+Gloss+%232 */
+			background: rgb(242, 246, 248);
+			/* Old browsers */
+			background: -moz-linear-gradient(top, rgba(242, 246, 248, 1) 0%, rgba(216, 225, 231, 1) 50%, rgba(181, 198, 208, 1) 51%, rgba(224, 239, 249, 1) 100%);
+			/* FF3.6-15 */
+			background: -webkit-linear-gradient(top, rgba(242, 246, 248, 1) 0%, rgba(216, 225, 231, 1) 50%, rgba(181, 198, 208, 1) 51%, rgba(224, 239, 249, 1) 100%);
+			/* Chrome10-25,Safari5.1-6 */
+			background: linear-gradient(to bottom, rgba(242, 246, 248, 1) 0%, rgba(216, 225, 231, 1) 50%, rgba(181, 198, 208, 1) 51%, rgba(224, 239, 249, 1) 100%);
+			/* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+			filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#f2f6f8', endColorstr='#e0eff9', GradientType=0);
+			/* IE6-9 */
+			width: calc(20%-20px);
+			/*height: calc(100% - 20px);*/
+			border: 1px solid #B9BDC1;
+			color: #797979;
+			-moz-box-shadow: 0 2px 4px #bbb inset;
+			-webkit-box-shadow: 0 2px 4px #BBB inset;
+			box-shadow: 0 2px 4px #BBB inset;
+			-moz-border-radius: 3px;
+			-webkit-border-radius: 3px;
+			border-radius: 3px;
+			padding: 10px;
+		}
 
-	// listener, whenever the server emits 'updaterooms', this updates the room the client is in
-	socket.on('updaterooms', function(rooms, cur_room) {
-		temp_cur_room = cur_room;
-		temp_rooms = rooms;
-		$('#rooms').empty();
-		$.each(temp_rooms, function(key, value) {
-			//  alert('key:'+key+' value:'+value.rname);
-			//  alert(value.rname);
-			if (value.rname == temp_cur_room) {
-				$('#rooms').append('<div>' + value.rname + '</div>');
-			} else {
-				$('#rooms').append('<div><a href="#" onclick="switchRoom(\'' + key + '\')">' + value.rname + '</a></div>');
+		.room {
+			-moz-border-radius-bottomright: 30px;
+			-webkit-border-bottom-right-radius: 30px;
+			border-bottom-right-radius: 30px;
+			border: 1px solid #848484;
+			outline: 0;
+			height: 25px;
+			background: transparent url(http://html-generator.weebly.com/files/theme/input-text-8.png) repeat-x;
+			box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+			margin: 10px;
+			padding-left: 5px;
+			padding-right: 20px;
+			display: block;
+		}
 
+		.room:hover {
+			color: grey;
+			box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+		}
+		/*--------------------------------------------*/
+
+		.chatArea {
+			background-color: #F8E0E6;
+			width: 80%;
+			height: 100%;
+			border: 1px solid #B9BDC1;
+			color: #797979;
+			-moz-box-shadow: 0 2px 4px #bbb inset;
+			-webkit-box-shadow: 0 2px 4px #BBB inset;
+			box-shadow: 0 2px 4px #BBB inset;
+			-moz-border-radius: 3px;
+			-webkit-border-radius: 3px;
+			border-radius: 3px;
+		}
+
+		.chatLog {
+			width: calc(100%-20px);
+			height: calc(100% - 55px);
+			/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f4e9e6+0,e2d0c7+50,ddc6bc+51,eac0c2+100 */
+			background: rgb(244, 233, 230);
+			/* Old browsers */
+			background: -moz-linear-gradient(top, rgba(244, 233, 230, 1) 0%, rgba(226, 208, 199, 1) 50%, rgba(221, 198, 188, 1) 51%, rgba(234, 192, 194, 1) 100%);
+			/* FF3.6-15 */
+			background: -webkit-linear-gradient(top, rgba(244, 233, 230, 1) 0%, rgba(226, 208, 199, 1) 50%, rgba(221, 198, 188, 1) 51%, rgba(234, 192, 194, 1) 100%);
+			/* Chrome10-25,Safari5.1-6 */
+			background: linear-gradient(to bottom, rgba(244, 233, 230, 1) 0%, rgba(226, 208, 199, 1) 50%, rgba(221, 198, 188, 1) 51%, rgba(234, 192, 194, 1) 100%);
+			/* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+			filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#f4e9e6', endColorstr='#eac0c2', GradientType=0);
+			/* IE6-9 */
+			padding: 10px;
+		}
+
+		.chatInput {
+			/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#4c4c4c+0,595959+12,666666+25,474747+39,2c2c2c+50,000000+51,111111+60,2b2b2b+76,1c1c1c+91,131313+100;Black+Gloss+%231 */
+			background: rgb(76, 76, 76);
+			/* Old browsers */
+			background: -moz-linear-gradient(top, rgba(76, 76, 76, 1) 0%, rgba(89, 89, 89, 1) 12%, rgba(102, 102, 102, 1) 25%, rgba(71, 71, 71, 1) 39%, rgba(44, 44, 44, 1) 50%, rgba(0, 0, 0, 1) 51%, rgba(17, 17, 17, 1) 60%, rgba(43, 43, 43, 1) 76%, rgba(28, 28, 28, 1) 91%, rgba(19, 19, 19, 1) 100%);
+			/* FF3.6-15 */
+			background: -webkit-linear-gradient(top, rgba(76, 76, 76, 1) 0%, rgba(89, 89, 89, 1) 12%, rgba(102, 102, 102, 1) 25%, rgba(71, 71, 71, 1) 39%, rgba(44, 44, 44, 1) 50%, rgba(0, 0, 0, 1) 51%, rgba(17, 17, 17, 1) 60%, rgba(43, 43, 43, 1) 76%, rgba(28, 28, 28, 1) 91%, rgba(19, 19, 19, 1) 100%);
+			/* Chrome10-25,Safari5.1-6 */
+			background: linear-gradient(to bottom, rgba(76, 76, 76, 1) 0%, rgba(89, 89, 89, 1) 12%, rgba(102, 102, 102, 1) 25%, rgba(71, 71, 71, 1) 39%, rgba(44, 44, 44, 1) 50%, rgba(0, 0, 0, 1) 51%, rgba(17, 17, 17, 1) 60%, rgba(43, 43, 43, 1) 76%, rgba(28, 28, 28, 1) 91%, rgba(19, 19, 19, 1) 100%);
+			/* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+			filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#4c4c4c', endColorstr='#131313', GradientType=0);
+			/* IE6-9 */
+			display: flex;
+			align-items: center;
+			width: calc(100% - 10px) height: 25px;
+			padding: 5px;
+		}
+
+		.textbox {
+			background-color: white;
+			width: calc(100% - 20px);
+			height: 30px;
+			margin: 5px;
+			padding-left: 10px;
+			padding-right: 10px;
+			border: 1px solid #848484;
+			-webkit-border-radius: 30px;
+			-moz-border-radius: 30px;
+			border-radius: 30px;
+			outline: 0;
+		}
+
+		.button {
+			/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f2f6f8+0,d8e1e7+50,b5c6d0+51,e0eff9+100;Grey+Gloss+%232 */
+			background: rgb(242, 246, 248);
+			/* Old browsers */
+			background: -moz-linear-gradient(top, rgba(242, 246, 248, 1) 0%, rgba(216, 225, 231, 1) 50%, rgba(181, 198, 208, 1) 51%, rgba(224, 239, 249, 1) 100%);
+			/* FF3.6-15 */
+			background: -webkit-linear-gradient(top, rgba(242, 246, 248, 1) 0%, rgba(216, 225, 231, 1) 50%, rgba(181, 198, 208, 1) 51%, rgba(224, 239, 249, 1) 100%);
+			/* Chrome10-25,Safari5.1-6 */
+			background: linear-gradient(to bottom, rgba(242, 246, 248, 1) 0%, rgba(216, 225, 231, 1) 50%, rgba(181, 198, 208, 1) 51%, rgba(224, 239, 249, 1) 100%);
+			/* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+			filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#f2f6f8', endColorstr='#e0eff9', GradientType=0);
+			/* IE6-9 */
+			border-radius: 12px;
+			color: black;
+			border: 1px solid #848484;
+			-webkit-transition-duration: 0.4s;
+			/* Safari */
+			transition-duration: 0.4s;
+			height: 30px;
+			font-family: courier;
+			font-size: 14px;
+		}
+
+		.button:hover {
+			color: grey;
+			box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+		}
+		/*--------------------------------------------*/
+
+		.userArea {
+			width: 200px;
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+		}
+
+		.userFace {
+			text-align: center;
+			/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ebe9f9+0,d8d0ef+50,cec7ec+51,c1bfea+100;Purple+3D+%231 */
+			background: rgb(235, 233, 249);
+			/* Old browsers */
+			background: -moz-linear-gradient(top, rgba(235, 233, 249, 1) 0%, rgba(216, 208, 239, 1) 50%, rgba(206, 199, 236, 1) 51%, rgba(193, 191, 234, 1) 100%);
+			/* FF3.6-15 */
+			background: -webkit-linear-gradient(top, rgba(235, 233, 249, 1) 0%, rgba(216, 208, 239, 1) 50%, rgba(206, 199, 236, 1) 51%, rgba(193, 191, 234, 1) 100%);
+			/* Chrome10-25,Safari5.1-6 */
+			background: linear-gradient(to bottom, rgba(235, 233, 249, 1) 0%, rgba(216, 208, 239, 1) 50%, rgba(206, 199, 236, 1) 51%, rgba(193, 191, 234, 1) 100%);
+			/* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+			filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#ebe9f9', endColorstr='#c1bfea', GradientType=0);
+			/* IE6-9 */
+			width: calc(100%-20px);
+			height: calc(40%-20px);
+			border: 1px solid #B9BDC1;
+			color: #797979;
+			-moz-box-shadow: 0 2px 4px #bbb inset;
+			-webkit-box-shadow: 0 2px 4px #BBB inset;
+			box-shadow: 0 2px 4px #BBB inset;
+			-moz-border-radius: 3px;
+			-webkit-border-radius: 3px;
+			border-radius: 3px;
+			padding: 10px;
+		}
+
+		.userLogo {
+			text-align: center;
+			/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,f1f1f1+50,e1e1e1+51,f6f6f6+100;White+Gloss+%231 */
+			background: rgb(255, 255, 255);
+			/* Old browsers */
+			background: -moz-linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(241, 241, 241, 1) 50%, rgba(225, 225, 225, 1) 51%, rgba(246, 246, 246, 1) 100%);
+			/* FF3.6-15 */
+			background: -webkit-linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(241, 241, 241, 1) 50%, rgba(225, 225, 225, 1) 51%, rgba(246, 246, 246, 1) 100%);
+			/* Chrome10-25,Safari5.1-6 */
+			background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(241, 241, 241, 1) 50%, rgba(225, 225, 225, 1) 51%, rgba(246, 246, 246, 1) 100%);
+			/* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+			filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f6f6f6', GradientType=0);
+			/* IE6-9 */
+			width: calc(100%-20px);
+			height: calc(30%-20px);
+			border: 1px solid #B9BDC1;
+			color: #797979;
+			-moz-box-shadow: 0 2px 4px #bbb inset;
+			-webkit-box-shadow: 0 2px 4px #BBB inset;
+			box-shadow: 0 2px 4px #BBB inset;
+			-moz-border-radius: 3px;
+			-webkit-border-radius: 3px;
+			border-radius: 3px;
+			padding: 10px;
+		}
+
+		.userCredit {
+			text-align: center;
+			/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ebe9f9+0,d8d0ef+50,cec7ec+51,c1bfea+100;Purple+3D+%231 */
+			background: rgb(235, 233, 249);
+			/* Old browsers */
+			background: -moz-linear-gradient(top, rgba(235, 233, 249, 1) 0%, rgba(216, 208, 239, 1) 50%, rgba(206, 199, 236, 1) 51%, rgba(193, 191, 234, 1) 100%);
+			/* FF3.6-15 */
+			background: -webkit-linear-gradient(top, rgba(235, 233, 249, 1) 0%, rgba(216, 208, 239, 1) 50%, rgba(206, 199, 236, 1) 51%, rgba(193, 191, 234, 1) 100%);
+			/* Chrome10-25,Safari5.1-6 */
+			background: linear-gradient(to bottom, rgba(235, 233, 249, 1) 0%, rgba(216, 208, 239, 1) 50%, rgba(206, 199, 236, 1) 51%, rgba(193, 191, 234, 1) 100%);
+			/* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+			filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#ebe9f9', endColorstr='#c1bfea', GradientType=0);
+			/* IE6-9 */
+			width: calc(100%-20px);
+			height: calc(30%-20px);
+			border: 1px solid #B9BDC1;
+			color: #797979;
+			-moz-box-shadow: 0 2px 4px #bbb inset;
+			-webkit-box-shadow: 0 2px 4px #BBB inset;
+			box-shadow: 0 2px 4px #BBB inset;
+			-moz-border-radius: 3px;
+			-webkit-border-radius: 3px;
+			border-radius: 3px;
+			padding: 10px;
+		}
+
+		p {
+			font-family: courier;
+			font-size: 18px;
+			text-align: left;
+		}
+
+		.unreadbox {
+			display: flex;
+			justify-content: center;
+			align-content: center;
+		}
+
+		hr {
+			width: 40%;
+			color: black;
+		}
+
+		.unreadtext {
+			text-align: center;
+			vertical-align: middle;
+			background-color: rgba(0, 0, 0, 0.5);
+			border-radius: 5px;
+			font-size: 12px;
+			color: white;
+			width: 20%;
+		}
+	</style>
+
+
+
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="bower_components/jquery/dist/jquery.min.js"></script>
+	<script>
+		var socket = io.connect('http://localhost:8080');
+		var temp_cur_room;
+		var temp_rooms = [];
+		// on connection to server, ask for user's name with an anonymous callback
+		socket.on('connect', function() {
+			// call the server-side function 'adduser' and send one parameter (value of prompt)
+			socket.emit('adduser', '<%= user.name.givenName %>', '<%=  user.id %>');
+
+		});
+
+		// listener, whenever the server emits 'updatechat', this updates the chat body
+		socket.on('updatechat', function(username, msg) {
+			$('#conversation').append('<b>' + username + ':</b> ' + msg + '<br>');
+		});
+		socket.on('getoldchat', function(read_msg, unread_msg) {
+			$('#conversation').empty();
+			//	alert(data[0].fname);
+			$.each(read_msg, function(key, value) {
+				$('#conversation').append('<b>' + value.fname + ':</b> ' + value.msg + '<br>');
+			});
+
+			if (unread_msg.length > 0) {
+				$('#conversation').append('<div class="unreadbox"><hr></hr><div class="unreadtext">Unread</div><hr></hr> </div>');
+				$.each(unread_msg, function(key, value) {
+					$('#conversation').append('<b>' + value.fname + ':</b> ' + value.msg + '<br>');
+				});
 			}
-		});
-	});
-
-
-
-	function switchRoom(index) {
-		//alert('index ' + index);
-		//	alert('temp_rooms ' + temp_rooms);
-		$.each(temp_rooms, function(key, value) {
-			//alert('this.rooms ' + this.rooms);
-			if (key == index) {
-				//	alert('switch to room ' + value.rname);
-				socket.emit('switchRoom', '<%= user.id %>', value);
-
-			}
 
 		});
 
+		// listener, whenever the server emits 'updaterooms', this updates the room the client is in
+		socket.on('updaterooms', function(rooms, cur_room) {
+			temp_cur_room = cur_room;
+			temp_rooms = rooms;
+			$('#rooms').empty();
+			$.each(temp_rooms, function(key, value) {
+				//  alert('key:'+key+' value:'+value.rname);
+				//  alert(value.rname);
+				if (value.rname == temp_cur_room) {
+					$('#rooms').append('<div>' + value.rname + '</div>');
+				} else {
+					$('#rooms').append('<div><a href="#" onclick="switchRoom(\'' + key + '\')">' + value.rname + '</a></div>');
 
-
-
-	}
-
-
-	// on load of page
-	$(function() {
-		// when the client clicks SEND
-		$('#datasend').click(function() {
-
-			var message = $('#data').val();
-			$('#data').val('');
-			$('#data').focus();
-			// tell server to execute 'sendchat' and send along one parameter
-			socket.emit('sendchat', '<%= user.id %>', message);
-		});
-
-		// when the client hits ENTER on their keyboard
-		$('#data').keypress(function(e) {
-			if (e.which == 13) {
-				$(this).blur();
-				$('#datasend').focus().click();
-			}
-		});
-		$('#addRoomButton').click(function() {
-			var newroom_name = $('#roomName').val();
-			$('#roomName').val('');
-			socket.emit('addRoom', '<%= user.id %>', newroom_name);
+				}
+			});
 		});
 
 
-		$('#username').text('<%= user.displayName %>');
 
-	});
-</script>
+		function switchRoom(index) {
+			//alert('index ' + index);
+			//	alert('temp_rooms ' + temp_rooms);
+			$.each(temp_rooms, function(key, value) {
+				//alert('this.rooms ' + this.rooms);
+				if (key == index) {
+					//	alert('switch to room ' + value.rname);
+					socket.emit('switchRoom', '<%= user.id %>', value);
 
-<div class="container">
+				}
 
-	<div class="roomArea">
+			});
 
-		<b style="font-family: courier; font-size: 20px;">ROOMS</b>
-		<input class="textbox" id="roomName" />
-		<input class="button" type="button" id="addRoomButton" value="Create Room" />
-		<div id="rooms"></div>
+
+
+
+		}
+
+
+		// on load of page
+		$(function() {
+			// when the client clicks SEND
+			$('#datasend').click(function() {
+
+				var message = $('#data').val();
+				$('#data').val('');
+				$('#data').focus();
+				// tell server to execute 'sendchat' and send along one parameter
+				socket.emit('sendchat', '<%= user.id %>', message);
+			});
+
+			// when the client hits ENTER on their keyboard
+			$('#data').keypress(function(e) {
+				if (e.which == 13) {
+					$(this).blur();
+					$('#datasend').focus().click();
+				}
+			});
+			$('#addRoomButton').click(function() {
+				var newroom_name = $('#roomName').val();
+				$('#roomName').val('');
+				socket.emit('addRoom', '<%= user.id %>', newroom_name);
+			});
+
+
+			$('#username').text('<%= user.displayName %>');
+
+		});
+	</script>
+
+	<div class="container">
+
+		<div class="roomArea">
+
+			<b style="font-family: courier; font-size: 20px;">ROOMS</b>
+			<input class="textbox" id="roomName" />
+			<input class="button" type="button" id="addRoomButton" value="Create Room" />
+			<div id="rooms"></div>
+
+		</div>
+
+		<div class="chatArea">
+
+			<div class="chatLog" id="conversation"></div>
+			<div class=chatInput>
+				<input class="textbox" style="margin: 0px;" id="data" />
+				<input class="button" type="button" id="datasend" value="Send" />
+			</div>
+
+		</div>
+
+		<div class="userArea">
+
+			<div class="userFace">
+				<img src="<%= user.photos[0].value %>" style="width: 100px; hight:100px;border-radius: 50%;"></img>
+				<br/>
+				<div id="username" style="font-family: courier; font-size: 18px;"></div>
+
+			</div>
+
+			<div class="userLogo">
+				<img src="logo.png" / style="border-radius: 8px;">
+			</div>
+
+			<div class="userCredit">
+				<p>
+					ผู้จัดทำ
+					<br> 1.
+					<br> 2.
+					<br> 3.
+					<br> 4.
+					<br>
+				</p>
+			</div>
+
+		</div>
+
 
 	</div>
+</body>
 
-	<div class="chatArea">
-
-		<div class="chatLog" id="conversation"></div>
-		<div class=chatInput>
-			<input class="textbox" style="margin: 0px;" id="data" />
-			<input class="button" type="button" id="datasend" value="Send" />
-		</div>
-
-	</div>
-
-	<div class="userArea">
-
-		<div class="userFace">
-			<img src="<%= user.photos[0].value %>" style="width: 100px; hight:100px;border-radius: 50%;"></img>
-			<br/>
-			<div id="username" style="font-family: courier; font-size: 18px;"></div>
-
-		</div>
-
-		<div class="userLogo">
-			<img src="logo.png" / style="border-radius: 8px;">
-		</div>
-
-		<div class="userCredit">
-			<p>
-				ผู้จัดทำ
-				<br> 1.
-				<br> 2.
-				<br> 3.
-				<br> 4.
-				<br>
-			</p>
-		</div>
-
-	</div>
-
-
-</div>
+</html>
