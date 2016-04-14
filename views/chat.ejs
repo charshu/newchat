@@ -44,22 +44,32 @@
 	// listener, whenever the server emits 'updaterooms', this updates the room the client is in
 	socket.on('updaterooms', function(rooms, cur_room) {
 		temp_cur_room = cur_room;
-		temp_rooms = rooms;
+		temp_rooms = rooms; //for using in function switchRoom ,down below
 		$('#rooms').empty();
 		$.each(temp_rooms, function(key, value) {
 			//  alert('key:'+key+' value:'+value.rname);
 			//  alert(value.rname);
-			if (value.rname == temp_cur_room) {
-				$('#rooms').append('<div>' + value.rname + '</div>');
+			if (value.rid == temp_cur_room.rid) {
+				$('#rooms').append('<div class="roomlist"><a href="#" id="roomname" class="btn btn-sm btn-block btn-social btn-flickr"><span class="fa fa-bullhorn"></span>' + value.rname + '<a href="#" onclick="leaveRoom(\''+value.rid+'\')" id="leave" class="btn btn-sm btn-danger ">Leave</a></div>');
 			} else {
-				$('#rooms').append('<div><a href="#" onclick="switchRoom(\'' + key + '\')">' + value.rname + '</a></div>');
+				if(value.isjoin)
+				$('#rooms').append('<div class="roomlist"><a href="#" onclick="switchRoom(\'' + key + '\')" id="roomname" class="btn btn-sm btn-block btn-social btn-github"><span class="fa fa-bullhorn"></span>' + value.rname + '<a href="#" onclick="leaveRoom(\''+value.rid+'\')" id="leave" class="btn btn-sm btn-danger ">Leave</a></div>');
+				else
+				$('#rooms').append('<div class="roomlist"><a href="#" onclick="switchRoom(\'' + key + '\')" id="roomname" class="btn btn-sm btn-block btn-social btn-github"><span class="fa fa-bullhorn"></span>' + value.rname + '</div>');
 
+
+				// <a href="/login/facebook" class="btn-lg btn-block btn-social btn-facebook">
+				// 		<span class="fa fa-facebook"></span>Sign in with Facebook
+				// </a>
 			}
 		});
 	});
 
 
+	function leaveRoom(rid){
+		socket.emit('leaveroom',rid);
 
+	}
 	function switchRoom(index) {
 		//alert('index ' + index);
 		//	alert('temp_rooms ' + temp_rooms);

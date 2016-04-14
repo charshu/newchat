@@ -2,7 +2,8 @@ var express = require('express'),
     app = express(),
     http = require('http'),
     server = http.createServer(app),
-    io = require('socket.io').listen(server);
+    io = require('socket.io').listen(server),
+    bs = require('binary-search');
 
 
 var mysql = require("mysql");
@@ -75,6 +76,7 @@ io.sockets.on('connection', function(socket) {
 
         });
         socket.room = 'public';
+        socket.rid = '1';
         socket.join('public');
         socket.emit('updatechat', 'SERVER', 'you have connected to ' + socket.room);
         // echo to room 1 that a person has connected to their room
@@ -153,6 +155,7 @@ io.sockets.on('connection', function(socket) {
         var oldroom = socket.room;
         var newroom = room.rname;
         var newroom_id = room.rid;
+
         console.log('[LOG] SWITCH TO rname: ' + newroom + ' FROM rname: ' + oldroom);
         //check if join new room for the first time
         //SELECT joinroom.fid,joinroom.rid,room.rname,joinroom.jointime,joinroom.leavetime from joinroom,room where room.rname = 'zz' and joinroom.rid = room.rid and joinroom.fid = '1034807556602456'
@@ -193,6 +196,7 @@ io.sockets.on('connection', function(socket) {
                     socket.leave(oldroom);
                     socket.join(newroom);
                     socket.room = newroom;
+                    socket.rid = newroom_id;
                     console.log('[LOG] GET MESSAGES....');
                     //socket.emit('updatechat', 'SERVER', 'you have connected to ' + newroom);
                     con.query('SELECT fname,msg FROM user,(SELECT B.fid, B.rid, B.jointime, B.leavetime FROM(SELECT * FROM room where rname = \'' + socket.room + '\') as A, joinroom as B where B.fid = \'' + user_id +
@@ -241,55 +245,100 @@ io.sockets.on('connection', function(socket) {
 
     // when the user disconnects.. perform this
     socket.on('leaveroom', function(rid) {
-
+        console.log('[LOG] LEAVE ROOM :' + rid);
+        socket.leave('public');
+        socket.join('public');
+        socket.room = 'public';
+        socket.rid = '1';
+        con.query('DELETE FROM joinroom WHERE fid = \''+socket.fid+'\' and rid = \''+rid+'\'', function(err, roomdata) {
+            if (err) console.log(err);
+            else {
+              console.log('[LOG] DELETE COMPLETED');
+              refreshListRoom();
+            }
+          });
     });
 
     function refreshListRoom() {
 
         //console.log('SELECT rname FROM room,joinchat WHERE joinchat.fid = \'' + user_id + '\' and room.rid = joinchat.rid');
-        con.query('SELECT rid,rname FROM room', function(err, roomdata) {
+        con.query('SELECT rid,rname FROM room ORDER BY `rid` ASC', function(err, roomdata) {
             if (err) console.log(err);
             else if (roomdata.length == 0) console.log('[LOG] YOU ARE NOT IN ANY ROOM');
             else {
 
-                con.query('SELECT fid,rid FROM joinroom WHERE fid=\'' + socket.fid + '\'', function(err, joinroomdata) {
+                con.query('SELECT fid,rid FROM joinroom WHERE fid=\'' + socket.fid + '\' ORDER BY `rid` ASC', function(err, joinroomdata) {
 
+                    //console.log('TEST BINARYSEARCH: '+bs([1, 2, 3, 4], 3, function(a, b) { return a - b; }));
 
-
+                    //  var count = 0;
                     rooms = [];
-
-                    for (var i = 0; i < roomdata.length; i++) {
-                        for (var j = 0; j < joinroomdata.length; j++) {
-                            if (roomdata[i].rid == joinroomdata[j].rid) {
-                                rooms.push({
-                                    rid: roomdata[i].rid,
-                                    rname: roomdata[i].rname,
-                                    isjoin: true
-                                });
-                                break;
-                            }
-
-                        }
-                        //if user has not joined
-                        if(j == joinroomdata.length)
-                        rooms.push({
-                            rid: roomdata[i].rid,
-                            rname: roomdata[i].rname,
-                            isjoin: false
-                        });
+                    joinrooms_id = [];
+                    for (var i = 0; i < joinroomdata.length; i++) {
+                        joinrooms_id.push(joinroomdata[i].rid);
 
                     }
+                    for (var i = 0; i < roomdata.length; i++) {
+                        //    count++;
+                        //because rooms are ordered
+                        if (bs(joinrooms_id, roomdata[i].rid, function(a, b) {
+                                return a - b;
+                            }) >= 0) {
+                            rooms.push({
+                                rid: roomdata[i].rid,
+                                rname: roomdata[i].rname,
+                                isjoin: true
+                            });
+
+                        } else
+                            rooms.push({
+                                rid: roomdata[i].rid,
+                                rname: roomdata[i].rname,
+                                isjoin: false
+                            });
+
+                    }
+                    console.log('[LOG] REFRESH LIST OF ROOMS AND EMIT UPDATING ROOM TO THE OTHERS');
+                    console.log(rooms);
+                    //  console.log('[LOG] COUNT: ' + count);
+                    io.sockets.emit('updaterooms', rooms, {
+                        rid: socket.rid,
+                        rname: socket.room
+                    });
                 });
 
-                console.log('[LOG] REFRESH LIST ROOM AND EMIT UPDATING ROOM TO THE OTHERS');
-                console.log(rooms);
+
 
 
             }
 
-            io.sockets.emit('updaterooms', rooms, socket.room);
+
         });
         //console.log('<------end request room list -------->');
+    }
+
+    function binaryIndexOf(searchElement) {
+        'use strict';
+
+        var minIndex = 0;
+        var maxIndex = this.length - 1;
+        var currentIndex;
+        var currentElement;
+
+        while (minIndex <= maxIndex) {
+            currentIndex = (minIndex + maxIndex) / 2 | 0;
+            currentElement = this[currentIndex];
+
+            if (currentElement < searchElement) {
+                minIndex = currentIndex + 1;
+            } else if (currentElement > searchElement) {
+                maxIndex = currentIndex - 1;
+            } else {
+                return currentIndex;
+            }
+        }
+
+        return -1;
     }
 });
 
