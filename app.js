@@ -3,7 +3,7 @@ var express = require('express'),
     http = require('http'),
     server = http.createServer(app),
     io = require('socket.io').listen(server);
-server.listen(8080);
+
 
 var mysql = require("mysql");
 
@@ -339,6 +339,9 @@ app.use(require('express-session')({
     saveUninitialized: true
 }));
 
+//static path specify
+app.use( express.static( "public" ) );
+
 // Initialize Passport and restore authentication state, if any, from the
 // session.
 app.use(passport.initialize());
@@ -360,6 +363,7 @@ app.get('/',
 
 app.get('/login',
     function(req, res) {
+
         res.render('login');
     });
 
@@ -385,3 +389,5 @@ app.get('/profile',
             user: req.user
         });
     });
+
+    server.listen(8080);

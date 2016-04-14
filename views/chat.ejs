@@ -350,6 +350,7 @@
 
 			var message = $('#data').val();
 			$('#data').val('');
+			$('#data').focus();
 			// tell server to execute 'sendchat' and send along one parameter
 			socket.emit('sendchat', '<%= user.id %>', message);
 		});
