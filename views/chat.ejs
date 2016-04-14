@@ -1,4 +1,3 @@
-
 <head>
 	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
@@ -7,160 +6,170 @@
 	<link rel="stylesheet" href="style/chat.css">
 	<title>MiniLine</title>
 </head>
-	<script src="/socket.io/socket.io.js"></script>
-	<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-	<script src="bower_components/jquery/dist/jquery.min.js"></script>
-	<script>
-		var socket = io.connect('http://localhost:8080');
-		var temp_cur_room;
-		var temp_rooms = [];
-		// on connection to server, ask for user's name with an anonymous callback
-		socket.on('connect', function() {
-			// call the server-side function 'adduser' and send one parameter (value of prompt)
-			socket.emit('adduser', '<%= user.name.givenName %>', '<%=  user.id %>');
+<script src="/socket.io/socket.io.js"></script>
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
+<script>
+	var socket = io.connect('http://localhost:8080');
+	var temp_cur_room;
+	var temp_rooms = [];
+	// on connection to server, ask for user's name with an anonymous callback
+	socket.on('connect', function() {
+		// call the server-side function 'adduser' and send one parameter (value of prompt)
+		socket.emit('adduser', '<%= user.name.givenName %>', '<%=  user.id %>');
+
+	});
+
+	// listener, whenever the server emits 'updatechat', this updates the chat body
+	socket.on('updatechat', function(username, msg) {
+		$('#conversation').append('<ul class="message"><b>' + username + ':</b> ' + msg + '</ul>');
+	});
+	socket.on('getoldchat', function(read_msg, unread_msg) {
+		$('#conversation').empty();
+		//	alert(data[0].fname);
+		$.each(read_msg, function(key, value) {
+			$('#conversation').append('<ul class="message"><b>' + value.fname + ':</b> ' + value.msg + '</ul>');
 		});
 
-		// listener, whenever the server emits 'updatechat', this updates the chat body
-		socket.on('updatechat', function(username, msg) {
-			$('#conversation').append('<ul class="message"><b>' + username + ':</b> ' + msg + '</ul>');
-		});
-		socket.on('getoldchat', function(read_msg, unread_msg) {
-			$('#conversation').empty();
-			//	alert(data[0].fname);
-			$.each(read_msg, function(key, value) {
+		if (unread_msg.length > 0) {
+			$('#conversation').append('<div class="unreadbox"><hr></hr><div class="unreadtext">Unread</div><hr></hr> </div>');
+			$.each(unread_msg, function(key, value) {
 				$('#conversation').append('<ul class="message"><b>' + value.fname + ':</b> ' + value.msg + '</ul>');
 			});
+		}
 
-			if (unread_msg.length > 0) {
-				$('#conversation').append('<div class="unreadbox"><hr></hr><div class="unreadtext">Unread</div><hr></hr> </div>');
-				$.each(unread_msg, function(key, value) {
-					$('#conversation').append('<b>' + value.fname + ':</b> ' + value.msg + '<br>');
-				});
+	});
+
+	// listener, whenever the server emits 'updaterooms', this updates the room the client is in
+	socket.on('updaterooms', function(rooms, cur_room) {
+		temp_cur_room = cur_room;
+		temp_rooms = rooms;
+		$('#rooms').empty();
+		$.each(temp_rooms, function(key, value) {
+			//  alert('key:'+key+' value:'+value.rname);
+			//  alert(value.rname);
+			if (value.rname == temp_cur_room) {
+				$('#rooms').append('<div>' + value.rname + '</div>');
+			} else {
+				$('#rooms').append('<div><a href="#" onclick="switchRoom(\'' + key + '\')">' + value.rname + '</a></div>');
+
+			}
+		});
+	});
+
+
+
+	function switchRoom(index) {
+		//alert('index ' + index);
+		//	alert('temp_rooms ' + temp_rooms);
+		$.each(temp_rooms, function(key, value) {
+			//alert('this.rooms ' + this.rooms);
+			if (key == index) {
+				//	alert('switch to room ' + value.rname);
+				socket.emit('switchRoom', '<%= user.id %>', value);
+
 			}
 
 		});
 
-		// listener, whenever the server emits 'updaterooms', this updates the room the client is in
-		socket.on('updaterooms', function(rooms, cur_room) {
-			temp_cur_room = cur_room;
-			temp_rooms = rooms;
-			$('#rooms').empty();
-			$.each(temp_rooms, function(key, value) {
-				//  alert('key:'+key+' value:'+value.rname);
-				//  alert(value.rname);
-				if (value.rname == temp_cur_room) {
-					$('#rooms').append('<div>' + value.rname + '</div>');
-				} else {
-					$('#rooms').append('<div><a href="#" onclick="switchRoom(\'' + key + '\')">' + value.rname + '</a></div>');
-
-				}
-			});
-		});
 
 
 
-		function switchRoom(index) {
-			//alert('index ' + index);
-			//	alert('temp_rooms ' + temp_rooms);
-			$.each(temp_rooms, function(key, value) {
-				//alert('this.rooms ' + this.rooms);
-				if (key == index) {
-					//	alert('switch to room ' + value.rname);
-					socket.emit('switchRoom', '<%= user.id %>', value);
-
-				}
-
-			});
+	}
 
 
+</script>
 
+<div class="container">
 
-		}
+	<div class="roomArea">
 
+		<b style="font-family: courier; font-size: 20px;">ROOMS</b>
+		<input class="textbox" id="roomName" />
+		<input class="button" type="button" id="addRoomButton" value="Create Room" />
+		<div id="rooms"></div>
 
-		// on load of page
-		$(function() {
-			// when the client clicks SEND
-			$('#datasend').click(function() {
+	</div>
 
-				var message = $('#data').val();
-				$('#data').val('');
-				$('#data').focus();
-				// tell server to execute 'sendchat' and send along one parameter
-				socket.emit('sendchat', '<%= user.id %>', message);
-			});
-
-			// when the client hits ENTER on their keyboard
-			$('#data').keypress(function(e) {
-				if (e.which == 13) {
-					$(this).blur();
-					$('#datasend').focus().click();
-				}
-			});
-			$('#addRoomButton').click(function() {
-				var newroom_name = $('#roomName').val();
-				$('#roomName').val('');
-				socket.emit('addRoom', '<%= user.id %>', newroom_name);
-			});
-
-
-			$('#username').text('<%= user.displayName %>');
-
-		});
-	</script>
-
-	<div class="container">
-
-		<div class="roomArea">
-
-			<b style="font-family: courier; font-size: 20px;">ROOMS</b>
-			<input class="textbox" id="roomName" />
-			<input class="button" type="button" id="addRoomButton" value="Create Room" />
-			<div id="rooms"></div>
-
-		</div>
-
-		<!-- <div class="chatArea">
+	<!-- <div class="chatArea">
 			<ul class="messages" id="conversation"></ul>
 		</div>
 		<input class="inputMessage" placeholder="Type here..." /> -->
-
-		<div class="chatArea">
+	<div class="chatArea">
+		<div id="messagesWrapper">
 			<div id="conversation"></div>
 		</div>
 		<div class="inputMessage">
-			<input class="textbox"  id="data" />
+			<input class="textbox" id="data" />
 			<input class="button" type="button" id="datasend" value="Send" />
 		</div>
+	</div>
 
 
+	<div class="userArea">
 
-		<div class="userArea">
-
-			<div class="userFace">
-				<img src="<%= user.photos[0].value %>" style="width: 100px; hight:100px;border-radius: 50%;"></img>
-				<br/>
-				<div id="username" style="font-family: courier; font-size: 18px;"></div>
-
-			</div>
-
-			<div class="userLogo">
-				<img src="logo.png" / style="border-radius: 8px;">
-			</div>
-
-			<div class="userCredit">
-				<p>
-					ผู้จัดทำ
-					<br> 1.
-					<br> 2.
-					<br> 3.
-					<br> 4.
-					<br>
-				</p>
-			</div>
+		<div class="userFace">
+			<img src="<%= user.photos[0].value %>" style="width: 100px; hight:100px;border-radius: 50%;"></img>
+			<br/>
+			<div id="username" style="font-family: courier; font-size: 18px;"></div>
 
 		</div>
 
+		<div class="userLogo">
+			<img src="logo.png" / style="border-radius: 8px;">
+		</div>
+
+		<div class="userCredit">
+			<p>
+				ผู้จัดทำ
+				<br> 1.
+				<br> 2.
+				<br> 3.
+				<br> 4.
+				<br>
+			</p>
+		</div>
 
 	</div>
+
+
+</div>
+<script>
+
+	// on load of page
+	$(function() {
+
+		// when the client clicks SEND
+		$('#datasend').click(function() {
+
+			var message = $('#data').val();
+			$('#data').val('');
+			$('#data').focus();
+			var elem = document.getElementById('messagesWrapper');
+		  elem.scrollTop = elem.scrollHeight ;
+				// tell server to execute 'sendchat' and send along one parameter
+			socket.emit('sendchat', '<%= user.id %>', message);
+		});
+
+		// when the client hits ENTER on their keyboard
+		$('#data').keypress(function(e) {
+			if (e.which == 13) {
+				$(this).blur();
+				$('#datasend').focus().click();
+			}
+		});
+		$('#addRoomButton').click(function() {
+			var newroom_name = $('#roomName').val();
+			$('#roomName').val('');
+			socket.emit('addRoom', '<%= user.id %>', newroom_name);
+		});
+
+
+		$('#username').text('<%= user.displayName %>');
+
+
+	});
+
+
+</script>
