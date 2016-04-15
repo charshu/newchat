@@ -64,6 +64,10 @@
 			}
 		});
 	});
+		socket.on('callupdaterooms',function(){
+			socket.emit('onlyrefreshroom');
+
+		});
 
 
 	function leaveRoom(rid){

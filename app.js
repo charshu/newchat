@@ -147,7 +147,7 @@ io.sockets.on('connection', function(socket) {
                 console.log('[LOG] rid: ' + rows.insertId + ' rname: ' + newroom_name + ' is added');
             }
         });
-        refreshListRoom();
+        refreshListRoom('all');
         //  console.log('<----------- end addRoom --------->');
     });
     //UPDATE joinroom SET leavetime = CURRENT_TIMESTAMP WHERE fid = '1386936317999356' and rid='2'
@@ -257,9 +257,15 @@ io.sockets.on('connection', function(socket) {
               refreshListRoom();
             }
           });
+          socket.emit('updatechat', 'SERVER', 'you have left from ' + socket.room);
     });
 
-    function refreshListRoom() {
+    socket.on('onlyrefreshroom',function(){
+        refreshListRoom();
+
+    });
+
+    function refreshListRoom(option) {
 
         //console.log('SELECT rname FROM room,joinchat WHERE joinchat.fid = \'' + user_id + '\' and room.rid = joinchat.rid');
         con.query('SELECT rid,rname FROM room ORDER BY `rid` ASC', function(err, roomdata) {
@@ -301,10 +307,13 @@ io.sockets.on('connection', function(socket) {
                     console.log('[LOG] REFRESH LIST OF ROOMS AND EMIT UPDATING ROOM TO THE OTHERS');
                     console.log(rooms);
                     //  console.log('[LOG] COUNT: ' + count);
-                    io.sockets.emit('updaterooms', rooms, {
+                    socket.emit('updaterooms', rooms, {
                         rid: socket.rid,
                         rname: socket.room
                     });
+
+                    if(option == 'all')
+                    socket.broadcast.emit('callupdaterooms');
                 });
 
 
