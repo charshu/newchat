@@ -12,9 +12,12 @@ var mysql = require("mysql");
 var con = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "admin",
+    password: "rghpj8wb",
     database: "chatdb2"
 });
+//For setting passport-facebook
+var callbacklink = 'http://localhost:8080/login/facebook/return'
+
 con.connect(function(err) {
     if (err) {
         console.log('Error connecting to Db');
@@ -368,7 +371,7 @@ var check = require('connect-ensure-login');
 passport.use(new Strategy({
         clientID: 1549122352049988,
         clientSecret: '221c989545ba03147c82812eceaa8b30',
-        callbackURL: 'http://localhost:8080/login/facebook/return',
+        callbackURL: callbacklink,
         profileFields: ['id', 'name', 'email', 'birthday', 'displayName', 'about', 'gender', 'profileUrl', 'picture.type(large)']
 
     },
