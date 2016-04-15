@@ -11,7 +11,7 @@
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
 <script>
-	var socket = io.connect('http://localhost:8080');
+	var socket = io.connect('<%= io_connect_url %>');
 	var temp_cur_room;
 	var temp_rooms = [];
 	// on connection to server, ask for user's name with an anonymous callback

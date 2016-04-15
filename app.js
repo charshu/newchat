@@ -4,19 +4,21 @@ var express = require('express'),
     server = http.createServer(app),
     io = require('socket.io').listen(server),
     bs = require('binary-search');
-
-
 var mysql = require("mysql");
+
 
 // First you need to create a connection to the db
 var con = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "rghpj8wb",
+    password: "admin",
     database: "chatdb2"
 });
 //For setting passport-facebook
-var callbacklink = 'http://localhost:8080/login/facebook/return'
+var callbacklink = 'http://localhost:8080/login/facebook/return';
+var server_path = 'http://localhost:8080';
+
+
 
 con.connect(function(err) {
     if (err) {
@@ -431,7 +433,8 @@ app.use(passport.session());
 //socket routing
 app.get('/chat', check.ensureLoggedIn('/login'), function(req, res) {
     res.render('chat', {
-        user: req.user
+        user: req.user,
+        io_connect_url : server_path
     });
 });
 //login routes.
