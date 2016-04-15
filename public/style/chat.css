@@ -46,6 +46,7 @@ body {
     width: 25%;
     min-width: 250px;
     max-width: 300px;
+    overflow-y: scroll;
 }
 .room {
     -moz-border-radius-bottomright: 30px;
