@@ -12,7 +12,7 @@ var mysql = require("mysql");
 var con = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "admin",
+    password: "rghpj8wb",
     database: "chatdb2"
 });
 // var con1 = mysql.createConnection({
@@ -24,8 +24,7 @@ var con = mysql.createConnection({
 // });
 //For setting passport-facebook
 var port = "8080";
-var callbacklink = "http://localhost:" + port +"/login/facebook/return";
-
+var callbacklink = "http://54.169.77.164:8080/login/facebook/return";
 
 
 //

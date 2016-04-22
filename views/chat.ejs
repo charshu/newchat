@@ -11,7 +11,7 @@
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
 <script>
-	var socket = io.connect('<%= io_connect_url %>');
+	var socket = io.connect('http://54.169.77.164:8080/');
 	var temp_cur_room;
 	var temp_rooms = [];
 
@@ -21,11 +21,11 @@
 		socket.emit('adduser', '<%= user.name.givenName %>', '<%=  user.id %>');
 
 	});
-	socket.on('connect_error', function() {
-		alert('<%= io_connect_url %>');
-		console.log('Failed to connect to server');
-		window.location.href = "http://stackoverflow.com";
-	});
+	// socket.on('connect_error', function() {
+	// 	alert('<%= io_connect_url %>');
+	// 	console.log('Failed to connect to server');
+	// 	window.location.href = "http://stackoverflow.com";
+	// });
 
 	// listener, whenever the server emits 'updatechat', this updates the chat body
 	socket.on('updatechat', function(username, msg) {
