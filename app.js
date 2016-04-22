@@ -3,7 +3,8 @@ var express = require('express'),
     http = require('http'),
     server = http.createServer(app),
     io = require('socket.io').listen(server),
-    bs = require('binary-search');
+    bs = require('binary-search'),
+    ip = require('ip');
 var mysql = require("mysql");
 
 
@@ -14,18 +15,34 @@ var con = mysql.createConnection({
     password: "admin",
     database: "chatdb2"
 });
+// var con1 = mysql.createConnection({
+//     host: "192.168.42.225",
+//     user: "root",
+//     port:"3306",
+//     password: "1234567890",
+//     database: "chatdb"
+// });
 //For setting passport-facebook
-var callbacklink = 'http://localhost:8080/login/facebook/return';
-var server_path = 'http://localhost:8080';
+var port = "8080";
+var callbacklink = "http://localhost:" + port +"/login/facebook/return";
 
 
 
+//
+// con.connect(function(err) {
+//     if (err) {
+//         console.log('Error connecting to Db chi');
+//         return;
+//     }
+//     console.log('Connection established to chi');
+// });
 con.connect(function(err) {
     if (err) {
-        console.log('Error connecting to Db');
+      console.log(err);
+        console.log('Error connecting to fah');
         return;
     }
-    console.log('Connection established');
+    console.log('Connection established to fah');
 });
 
 // usernames which are currently connected to the chat
@@ -80,6 +97,7 @@ io.sockets.on('connection', function(socket) {
 
 
         });
+
         socket.room = 'public';
         socket.rid = '1';
         socket.join('public');
@@ -431,11 +449,13 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //socket routing
+
 app.get('/chat', check.ensureLoggedIn('/login'), function(req, res) {
     res.render('chat', {
         user: req.user,
-        io_connect_url : server_path
+        io_connect_url : ip.address() +':'+port
     });
+
 });
 //login routes.
 app.get('/',
@@ -474,4 +494,4 @@ app.get('/profile',
         });
     });
 
-server.listen(8080);
+server.listen(port);

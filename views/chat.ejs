@@ -14,11 +14,17 @@
 	var socket = io.connect('<%= io_connect_url %>');
 	var temp_cur_room;
 	var temp_rooms = [];
+
 	// on connection to server, ask for user's name with an anonymous callback
 	socket.on('connect', function() {
 		// call the server-side function 'adduser' and send one parameter (value of prompt)
 		socket.emit('adduser', '<%= user.name.givenName %>', '<%=  user.id %>');
 
+	});
+	socket.on('connect_error', function() {
+		alert('<%= io_connect_url %>');
+		console.log('Failed to connect to server');
+		window.location.href = "http://stackoverflow.com";
 	});
 
 	// listener, whenever the server emits 'updatechat', this updates the chat body
@@ -50,12 +56,14 @@
 			//  alert('key:'+key+' value:'+value.rname);
 			//  alert(value.rname);
 			if (value.rid == temp_cur_room.rid) {
-				$('#rooms').append('<div class="roomlist"><a href="#" id="roomname" class="btn btn-sm btn-block btn-social btn-flickr"><span class="fa fa-bullhorn"></span>' + value.rname + '<a href="#" onclick="leaveRoom(\''+value.rid+'\')" id="leave" class="btn btn-sm btn-danger ">Leave</a></div>');
+				$('#rooms').append('<div class="roomlist"><a href="#" id="roomname" class="btn btn-sm btn-block btn-social btn-flickr"><span class="fa fa-bullhorn"></span>' + value.rname + '<a href="#" onclick="leaveRoom(\'' + value.rid +
+					'\')" id="leave" class="btn btn-sm btn-danger ">Leave</a></div>');
 			} else {
-				if(value.isjoin)
-				$('#rooms').append('<div class="roomlist"><a href="#" onclick="switchRoom(\'' + key + '\')" id="roomname" class="btn btn-sm btn-block btn-social btn-github"><span class="fa fa-bullhorn"></span>' + value.rname + '<a href="#" onclick="leaveRoom(\''+value.rid+'\')" id="leave" class="btn btn-sm btn-danger ">Leave</a></div>');
+				if (value.isjoin)
+					$('#rooms').append('<div class="roomlist"><a href="#" onclick="switchRoom(\'' + key + '\')" id="roomname" class="btn btn-sm btn-block btn-social btn-github"><span class="fa fa-bullhorn"></span>' + value.rname +
+						'<a href="#" onclick="leaveRoom(\'' + value.rid + '\')" id="leave" class="btn btn-sm btn-danger ">Leave</a></div>');
 				else
-				$('#rooms').append('<div class="roomlist"><a href="#" onclick="switchRoom(\'' + key + '\')" id="roomname" class="btn btn-sm btn-block btn-social btn-github"><span class="fa fa-bullhorn"></span>' + value.rname + '</div>');
+					$('#rooms').append('<div class="roomlist"><a href="#" onclick="switchRoom(\'' + key + '\')" id="roomname" class="btn btn-sm btn-block btn-social btn-github"><span class="fa fa-bullhorn"></span>' + value.rname + '</div>');
 
 
 				// <a href="/login/facebook" class="btn-lg btn-block btn-social btn-facebook">
@@ -64,16 +72,17 @@
 			}
 		});
 	});
-		socket.on('callupdaterooms',function(){
-			socket.emit('onlyrefreshroom');
+	socket.on('callupdaterooms', function() {
+		socket.emit('onlyrefreshroom');
 
-		});
+	});
 
 
-	function leaveRoom(rid){
-		socket.emit('leaveroom',rid);
+	function leaveRoom(rid) {
+		socket.emit('leaveroom', rid);
 
 	}
+
 	function switchRoom(index) {
 		//alert('index ' + index);
 		//	alert('temp_rooms ' + temp_rooms);
@@ -91,8 +100,6 @@
 
 
 	}
-
-
 </script>
 
 <div class="container">
@@ -151,7 +158,6 @@
 
 </div>
 <script>
-
 	// on load of page
 	$(function() {
 
@@ -162,8 +168,8 @@
 			$('#data').val('');
 			$('#data').focus();
 			var elem = document.getElementById('messagesWrapper');
-		  elem.scrollTop = elem.scrollHeight ;
-				// tell server to execute 'sendchat' and send along one parameter
+			elem.scrollTop = elem.scrollHeight;
+			// tell server to execute 'sendchat' and send along one parameter
 			socket.emit('sendchat', '<%= user.id %>', message);
 		});
 
@@ -185,6 +191,4 @@
 
 
 	});
-
-
 </script>
