@@ -98,10 +98,14 @@
 <div class="container">
 
 	<div class="roomArea">
-
+		<div class="userLogo">
+			<img src="/images/logo.png" style="border-radius: 8px;" width="150px" height="auto">
+		</div>
 		<b style="font-family: courier; font-size: 20px;">ROOMS</b>
-		<input class="textbox" id="roomName" />
-		<input class="button" type="button" id="addRoomButton" value="Create Room" />
+		<div class="roomAdd">
+			<span><input class="textbox" id="roomName" />
+				<input class="button" type="button" id="addRoomButton" value="Create Room" /></span>
+		</div>
 		<div id="rooms"></div>
 
 	</div>
@@ -126,22 +130,19 @@
 		<div class="userFace">
 			<img src="<%= user.photos[0].value %>" style="width: 100px; hight:100px;border-radius: 50%;"></img>
 			<br/>
-			<div id="username" style="font-family: courier; font-size: 18px;"></div>
+			<div id="username" style="color: white; font-family: courier; font-size: 18px;"></div>
 
-		</div>
-
-		<div class="userLogo">
-			<img src="/images/logo.png" style="border-radius: 8px;" width="150px" height="auto">
 		</div>
 
 		<div class="userCredit">
 			<p>
-				ผู้จัดทำ
-				<br> 1.
-				<br> 2.
-				<br> 3.
-				<br> 4.
-				<br>
+				<b style="font-family: courier; font-size: 20px;">CREDITS</b>
+				<ul>
+					<li>5630513521 Rujira</li>
+					<li>5630520921 Vachirakorn</li>
+					<li>5630546221 Wantanee</li>
+					<li>5631072221 Patraporn</li>
+				</ul>
 			</p>
 		</div>
 
